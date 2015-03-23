@@ -6,6 +6,14 @@
     <br/>
     <form id="ApplicationForm" class="form form-register" method="POST" action="" role="form">
             {{ form.hidden_tag() }}
+			<div class="form-group">
+				{{ form.first_name.label }}
+				{{ form.first_name(placeholder="First Name", class_="form-control") }}
+			</div>
+			<div class="form-group">
+				{{ form.last_name.label }}
+				{{ form.last_name(placeholder="Last Name", class_="form-control") }}
+			</div>
             <div class="form-group">
                 {{form.username.label}}
                 {{form.username(placeholder="Username", class_="form-control")}}

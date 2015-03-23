@@ -46,6 +46,8 @@ def submit_application():
         new_user = User.create(username=form.username.data,
                         email=form.email.data,
                         password=form.password.data,
+                        fname=form.first_name.data,
+                        lname=form.last_name.data,
                         active=False)
         flash("Your application for Rood Kamer measurement has been submitted!  You should receive a response in 7 to 14 days.", 'success')
         return redirect(url_for('public.home'))

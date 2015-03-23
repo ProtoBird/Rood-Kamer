@@ -5,6 +5,10 @@ from wtforms.validators import DataRequired, Email, EqualTo, Length
 from .models import User
 
 class ApplicationForm(Form):
+    first_name = TextField('First Name',
+                           validators=[DataRequired(), Length(min=3, max=30)])
+    last_name = TextField('Last Name',
+                           validators=[DataRequired(), Length(min=3, max=30)])
     username = TextField('Username',
                     validators=[DataRequired(), Length(min=3, max=25)])
     email = TextField('Email',
