@@ -7,7 +7,7 @@ from flask.ext.login import login_user, login_required, logout_user
 from roodkamer.extensions import login_manager
 from roodkamer.user.models import User
 from roodkamer.public.forms import LoginForm
-from roodkamer.user.forms import RegisterForm
+from roodkamer.user.forms import ApplicationForm
 from roodkamer.utils import flash_errors
 from roodkamer.database import db
 
@@ -39,19 +39,19 @@ def logout():
     flash('You are logged out.', 'info')
     return redirect(url_for('public.home'))
 
-@blueprint.route("/register/", methods=['GET', 'POST'])
-def register():
-    form = RegisterForm(request.form, csrf_enabled=False)
+@blueprint.route("/submit_application/", methods=['GET', 'POST'])
+def submit_application():
+    form = ApplicationForm(request.form, csrf_enabled=False)
     if form.validate_on_submit():
         new_user = User.create(username=form.username.data,
                         email=form.email.data,
                         password=form.password.data,
-                        active=True)
-        flash("Thank you for registering. You can now log in.", 'success')
+                        active=False)
+        flash("Your application for Rood Kamer measurement has been submitted!  You should receive a response in 7 to 14 days.", 'success')
         return redirect(url_for('public.home'))
     else:
         flash_errors(form)
-    return render_template('public/register.html', form=form)
+    return render_template('public/submit_application.html', form=form)
 
 @blueprint.route("/about/")
 def about():

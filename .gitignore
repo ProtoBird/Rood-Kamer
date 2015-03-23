@@ -45,3 +45,12 @@ docs/_build
 # Virtualenvs
 env
 env*
+
+#Executable Windows Files
+*.exe
+
+#Database Files
+*.db
+
+#Eclipse Settings
+.settings/

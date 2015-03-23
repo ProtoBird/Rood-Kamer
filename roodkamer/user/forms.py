@@ -4,7 +4,7 @@ from wtforms.validators import DataRequired, Email, EqualTo, Length
 
 from .models import User
 
-class RegisterForm(Form):
+class ApplicationForm(Form):
     username = TextField('Username',
                     validators=[DataRequired(), Length(min=3, max=25)])
     email = TextField('Email',
@@ -15,11 +15,11 @@ class RegisterForm(Form):
                 [DataRequired(), EqualTo('password', message='Passwords must match')])
 
     def __init__(self, *args, **kwargs):
-        super(RegisterForm, self).__init__(*args, **kwargs)
+        super(ApplicationForm, self).__init__(*args, **kwargs)
         self.user = None
 
     def validate(self):
-        initial_validation = super(RegisterForm, self).validate()
+        initial_validation = super(ApplicationForm, self).validate()
         if not initial_validation:
             return False
         user = User.query.filter_by(username=self.username.data).first()
