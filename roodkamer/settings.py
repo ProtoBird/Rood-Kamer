@@ -5,6 +5,7 @@ os_env = os.environ
 
 class Config(object):
     SECRET_KEY = os_env.get('RK_SKI', 'secret-key')  # TODO: Change me
+    RK_ADMIN = os_env.get('RK_ADMIN')
     APP_DIR = os.path.abspath(os.path.dirname(__file__))  # This directory
     PROJECT_ROOT = os.path.abspath(os.path.join(APP_DIR, os.pardir))
     BCRYPT_LOG_ROUNDS = 13
@@ -26,10 +27,18 @@ class DevConfig(Config):
     """Development configuration."""
     ENV = 'dev'
     DEBUG = True
-    DB_NAME = 'roodkamer.db'
-    # Put the db file in project root
-    DB_PATH = os.path.join(Config.PROJECT_ROOT, DB_NAME)
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///{0}'.format(DB_PATH)
+
+    RK_DB = os_env.get('RK_DB')    
+    RK_DB_PASSWORD = os_env.get('RK_DB_PASSWORD')
+    RK_DB_HOST = 'localhost'
+    
+    SQLALCHEMY_DATABASE_URI = "mysql://%s:%s@%s:3306/%s" % (
+                                                  Config.RK_ADMIN,
+                                                  RK_DB_PASSWORD,
+                                                  RK_DB_HOST,
+                                                  RK_DB
+                                                  )
+    
     DEBUG_TB_ENABLED = True
     ASSETS_DEBUG = True  # Don't bundle/minify static assets
     CACHE_TYPE = 'simple'  # Can be "memcached", "redis", etc.

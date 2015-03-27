@@ -29,13 +29,13 @@ class Role(SurrogatePK, Model):
 class User(UserMixin, SurrogatePK, Model):
 
     __tablename__ = 'users'
-    username = Column(db.String(80), unique=True, nullable=False)
+    username = Column(db.String(80), unique=True, nullable=True)
     email = Column(db.String(80), unique=True, nullable=False)
     #: The hashed password
     password = Column(db.String(128), nullable=True)
     created_at = Column(db.DateTime, nullable=False, default=dt.datetime.utcnow)
-    first_name = Column(db.String(30), nullable=True)
-    last_name = Column(db.String(30), nullable=True)
+    first_name = Column(db.String(30), nullable=False)
+    last_name = Column(db.String(30), nullable=False)
     active = Column(db.Boolean(), default=False)
     is_admin = Column(db.Boolean(), default=False)
 
