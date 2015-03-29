@@ -49,7 +49,7 @@ def submit_application():
                         fname=form.first_name.data,
                         lname=form.last_name.data,
                         active=False)
-        flash("Your application for Rood Kamer measurement has been submitted!  You should receive a response in 7 to 14 days.", 'success')
+        flash("Thank you for registering. You can now log in.", 'success')
         return redirect(url_for('public.home'))
     else:
         flash_errors(form)

@@ -12,7 +12,15 @@ from roodkamer.database import (
     relationship,
     SurrogatePK,
 )
+from __builtin__ import staticmethod
 
+class Permission:
+    COMMENT = 0x01
+    WRITE_ARTICLES = 0x02
+    MODERATE_COMMENTS = 0x04
+    VOTE = 0x08
+    BLOCK = 0x10
+    ADMINISTER = 0x80
 
 class Role(SurrogatePK, Model):
     __tablename__ = 'roles'
@@ -23,28 +31,46 @@ class Role(SurrogatePK, Model):
     def __init__(self, name, **kwargs):
         db.Model.__init__(self, name=name, **kwargs)
 
+    @staticmethod
+    def insert_roles():
+        roles = {
+            'Observer': (Permission.COMMENT |
+                         Permission.WRITE_ARTICLES, True),
+            'Comrade': (Permission.COMMENT |
+                        Permission.WRITE_ARTICLES |
+                        Permission.MODERATE_COMMENTS |
+                        Permission.VOTE |
+                        Permission.BLOCK, False),
+            'Administrator': (0xff, False)
+        }
+        for r in roles:
+            role = Role.query.filter_by(name=r).first()
+            if role is None:
+                role = Role(name=r)
+            role.permissions = roles[r][0]
+            role.default = roles[r][1]
+            db.session.add(role)
+        db.session.commit()
+
     def __repr__(self):
         return '<Role({name})>'.format(name=self.name)
 
 class User(UserMixin, SurrogatePK, Model):
-
     __tablename__ = 'users'
-    username = Column(db.String(80), unique=True, nullable=True)
+    username = Column(db.String(80), unique=True, nullable=False)
     email = Column(db.String(80), unique=True, nullable=False)
     #: The hashed password
-    password = Column(db.String(128), nullable=True)
+    password = Column(db.String(128), nullable=False)
     created_at = Column(db.DateTime, nullable=False, default=dt.datetime.utcnow)
     first_name = Column(db.String(30), nullable=False)
     last_name = Column(db.String(30), nullable=False)
-    active = Column(db.Boolean(), default=False)
+    active = Column(db.Boolean(), default=True)
     is_admin = Column(db.Boolean(), default=False)
 
-    def __init__(self, username, email, fname, lname, password=None, **kwargs):
+    def __init__(self, username, email, fname, lname, password, **kwargs):
         db.Model.__init__(self, username=username, email=email, first_name=fname, last_name=lname, **kwargs)
         if password:
             self.set_password(password)
-        else:
-            self.password = None
 
     def set_password(self, password):
         self.password = bcrypt.generate_password_hash(password)
