@@ -27,7 +27,9 @@ class Role(SurrogatePK, Model):
     name = Column(db.String(80), unique=True, nullable=False)
     user_id = ReferenceCol('users', nullable=True)
     user = relationship('User', backref='roles')
-
+    default = db.Column(db.Boolean, default=False, index=True)
+    permissions = db.Column(db.Integer)
+    
     def __init__(self, name, **kwargs):
         db.Model.__init__(self, name=name, **kwargs)
 
