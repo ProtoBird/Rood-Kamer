@@ -12,7 +12,7 @@ from roodkamer.extensions import (
     migrate,
     debug_toolbar,
 )
-from roodkamer import public, user
+from roodkamer import public, user, civic
 
 
 def create_app(config_object=ProdConfig):
@@ -43,6 +43,7 @@ def register_extensions(app):
 def register_blueprints(app):
     app.register_blueprint(public.views.blueprint)
     app.register_blueprint(user.views.blueprint)
+    app.register_blueprint(civic.views.blueprint)
     return None
 
 
