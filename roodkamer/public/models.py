@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from roodkamer.database import (
     Column,
     db,
@@ -6,6 +7,8 @@ from roodkamer.database import (
     relationship,
     SurrogatePK,
 )
+
+import datetime as dt
 
 class Article(SurrogatePK, Model):
     __tablename__ = "articles"

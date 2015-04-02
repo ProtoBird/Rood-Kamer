@@ -6,6 +6,7 @@ from flask.ext.login import login_user, login_required, logout_user
 
 from roodkamer.extensions import login_manager
 from roodkamer.user.models import User
+from roodkamer.public.models import Article
 from roodkamer.public.forms import LoginForm
 from roodkamer.user.forms import RegisterForm
 from roodkamer.utils import flash_errors
