@@ -16,5 +16,5 @@ class CKTextAreaField(TextAreaField):
     widget = CKTextAreaWidget() 
 
 class ArticleForm(Form):
-    article_body = CKTextAreaField()
+    body = CKTextAreaField()
     post = SubmitField()

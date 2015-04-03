@@ -4,8 +4,8 @@ from flask import (Blueprint, request, render_template, flash, url_for,
                     redirect, session)
 from flask.ext.login import login_required
 
-from roodkamer.public.models import Article
-from roodkamer.public.forms import LoginForm, ArticleForm
+from roodkamer.media.models import Article
+from roodkamer.media.forms import ArticleForm
 from roodkamer.database import db
 
 blueprint = Blueprint('media', __name__, url_prefix='/media', 
@@ -17,4 +17,4 @@ def edit_article():
     form = ArticleForm(request.form, csrf_enabled=False)
     if request.method == "POST":
         pass
-    return render_template("media/test.html", post_form=form)
+    return render_template("media/edit.html", post_form=form)
