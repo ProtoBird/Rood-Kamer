@@ -7,7 +7,7 @@ from flask.ext.login import login_user, login_required, logout_user
 from roodkamer.extensions import login_manager
 from roodkamer.user.models import User
 from roodkamer.public.models import Article
-from roodkamer.public.forms import LoginForm
+from roodkamer.public.forms import LoginForm, CKTestForm
 from roodkamer.user.forms import RegisterForm
 from roodkamer.utils import flash_errors
 from roodkamer.database import db
@@ -60,3 +60,8 @@ def register():
 def about():
     form = LoginForm(request.form)
     return render_template("public/about.html", form=form)
+
+@blueprint.route("/edit_article/", methods=['GET', 'POST'])
+def edit_article():
+    form = CKTestForm(request.form, csrf_enabled=False)
+    return render_template("public/test.html", form2=form)
