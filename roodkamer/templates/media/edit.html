@@ -3,8 +3,16 @@
 {% block content %}
 <div class="container-narrow">
 	<form method="POST" action="" role="form">
+		<div class="form-group">
+			{{ post_form.title.label }} 
+			{{ post_form.title(class_="form-control") }}
+		</div>
+		<div class="form-group">
 			{{ post_form.body() }}
+		</div>
+		<div class="form-group">
 			{{ post_form.post(class_="btn btn-default btn-submit") }}
+		</div>
 	</form>
 </div>
 {% endblock %}
