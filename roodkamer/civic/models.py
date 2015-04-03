@@ -17,8 +17,6 @@ class Proposal(SurrogatePK, Model):
     created_at = Column(db.DateTime, nullable=False, default=dt.datetime.utcnow)
     last_considered = Column(db.DateTime, nullable=True, default=None)
     is_live = Column(db.Boolean(), default=False)
-    supporters = relationship('users', backref='proposals')
-    opponents = relationship('users', backref='proposals')
     
     def __init__(self, title, **kwargs):
         db.Model.__init__(self, title=title, **kwargs) 
