@@ -19,6 +19,7 @@ def edit_article():
     form.authors.choices = [(u.id, u.full_name) for u in User.query.order_by('last_name')]
     uid = int(session['user_id'])
     assert(uid in [x[0] for x in form.authors.choices])
+    #TODO: Get the default to actually work
     form.authors.default = uid
     if request.method == "POST":
         pass
