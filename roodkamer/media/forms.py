@@ -1,7 +1,7 @@
 from flask_wtf import Form
 from wtforms import TextField, PasswordField, SubmitField
 from wtforms.widgets import TextArea
-from wtforms.fields import TextAreaField
+from wtforms.fields import TextAreaField, SelectMultipleField
 from wtforms.validators import DataRequired, Length
 
 from roodkamer.user.models import User
@@ -18,5 +18,7 @@ class CKTextAreaField(TextAreaField):
 class ArticleForm(Form):
     title = TextField('Title',
                       validators=[DataRequired(), Length(min=3, max=128)])
+    authors = SelectMultipleField('Author(s)',
+                         validators=[DataRequired()])
     body = CKTextAreaField()
     post = SubmitField()

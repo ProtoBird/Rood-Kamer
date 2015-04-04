@@ -8,6 +8,10 @@
 			{{ post_form.title(class_="form-control") }}
 		</div>
 		<div class="form-group">
+			{{ post_form.authors.label }} 
+			{{ post_form.authors(class_="form-control") }}
+		</div>
+		<div class="form-group">
 			{{ post_form.body() }}
 		</div>
 		<div class="form-group">
