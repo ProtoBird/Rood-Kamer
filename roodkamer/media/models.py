@@ -23,12 +23,12 @@ authors = db.Table('authors',
 class Article(SurrogatePK, Model):
     __tablename__ = "articles"
     title = Column(db.String(128), unique=True, nullable=False)
-    authors = db.relationship('Tag', secondary=tags,
+    authors = db.relationship('User', secondary=authors,
         backref=db.backref('articles', lazy='dynamic'))
     body = Column(db.Text, nullable=True)
     created_at = Column(db.DateTime, nullable=False, default=dt.datetime.utcnow)
     is_visible = Column(db.Boolean(), default=False)
-    tags = db.relationship('Tag', secondary=tags,
+    subject_tags = db.relationship('Tag', secondary=tags,
         backref=db.backref('articles', lazy='dynamic'))
 
     def __init__(self, title, visible=False, **kwargs):
