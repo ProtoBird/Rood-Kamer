@@ -22,5 +22,13 @@ def edit_article():
     #TODO: Get the default to actually work
     form.authors.default = uid
     if request.method == "POST":
-        pass
+        #TODO: Setup validation
+        article = Article.create(title=form.title.data,
+                                 body=form.body.data)
+        aids = [int(x) for x in form.authors.data]
+        for aid in User.query.filter(User.id.in_(aids)):
+            article.authors.append(aid)
+        db.session.add(article)
+        db.session.commit()
+        return redirect(url_for('user.members'))
     return render_template("media/edit.html", post_form=form)
