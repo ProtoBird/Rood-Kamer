@@ -4,7 +4,7 @@ from flask import (Blueprint, request, render_template, flash, url_for,
                     redirect, session)
 from flask.ext.login import login_required
 
-from roodkamer.media.models import Article
+from roodkamer.media.models import Article, tags, Tag
 from roodkamer.media.forms import ArticleForm
 from roodkamer.user.models import User
 from roodkamer.database import db
@@ -26,11 +26,11 @@ def edit_article():
         article = Article.create(title=form.title.data,
                                  body=form.body.data)
         aids = [int(x) for x in form.authors.data]
-        tids = form.subject_tags.data
-        for aid, tid in zip(User.query.filter(User.id.in_(aids)),
-                            User.query.filter(User.id.in_(tids))):
+        for aid in User.query.filter(User.id.in_(aids)):
             article.authors.append(aid)
-            article.authors.append(tid)
+        for tagstr in form.subject_tags.data.split(","):
+            taginDB = Tag.query.filter_by(name=tagstr).first()
+            article.subject_tags.append(taginDB) if taginDB else article.subject_tags.append(Tag(name=tagstr)) 
         db.session.add(article)
         db.session.commit()
         return redirect(url_for('user.members'))
