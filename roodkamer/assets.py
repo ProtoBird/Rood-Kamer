@@ -5,6 +5,7 @@ css = Bundle(
     "libs/bootstrap/dist/css/bootstrap.css",
     "css/style.css",
     "css/bootstrap-multiselect.css",
+    "css/bootstrap-tagsinput.css",
     filters="cssmin",
     output="public/css/common.css"
 )
@@ -15,6 +16,7 @@ js = Bundle(
     "libs/ajax/ckeditor/ckeditor.js",
     "js/plugins.js",
     "js/bootstrap-multiselect.js",
+    "js/bootstrap-tagsinput.js",
     "js/script.js",
     filters='jsmin',
     output="public/js/common.js"
