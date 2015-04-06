@@ -22,3 +22,4 @@ class ArticleForm(Form):
                          validators=[DataRequired()])
     body = CKTextAreaField()
     post = SubmitField()
+    subject_tags = TextField("Tags")

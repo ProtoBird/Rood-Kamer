@@ -26,8 +26,11 @@ def edit_article():
         article = Article.create(title=form.title.data,
                                  body=form.body.data)
         aids = [int(x) for x in form.authors.data]
-        for aid in User.query.filter(User.id.in_(aids)):
+        tids = form.subject_tags.data
+        for aid, tid in zip(User.query.filter(User.id.in_(aids)),
+                            User.query.filter(User.id.in_(tids))):
             article.authors.append(aid)
+            article.authors.append(tid)
         db.session.add(article)
         db.session.commit()
         return redirect(url_for('user.members'))
