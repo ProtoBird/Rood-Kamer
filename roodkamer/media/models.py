@@ -40,3 +40,9 @@ class Article(SurrogatePK, Model):
 class Tag(Model):
     id = db.Column(db.Integer, primary_key=True)
     name = Column(db.String(64), unique=True, nullable=False)
+
+    def __init__(self, name, **kwargs):
+        db.Model.__init__(self, name=name, **kwargs)
+        
+    def __repr__(self):
+        return '<Tag{name}>'.format(name=self.name)
