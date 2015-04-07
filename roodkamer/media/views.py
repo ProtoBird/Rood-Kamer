@@ -8,6 +8,7 @@ from roodkamer.media.models import Article, tags, Tag
 from roodkamer.media.forms import ArticleForm
 from roodkamer.user.models import User
 from roodkamer.database import db
+from roodkamer.utils import flash_errors
 
 blueprint = Blueprint('media', __name__, url_prefix='/media', 
                       static_folder="../static")
@@ -21,8 +22,7 @@ def edit_article():
     assert(uid in [x[0] for x in form.authors.choices])
     #TODO: Get the default to actually work
     form.authors.default = uid
-    if request.method == "POST":
-        #TODO: Setup validation
+    if form.validate_on_submit():
         article = Article.create(title=form.title.data,
                                  body=form.body.data,
                                  publish=form.is_visible.data)
@@ -34,5 +34,8 @@ def edit_article():
             article.subject_tags.append(taginDB) if taginDB else article.subject_tags.append(Tag(name=tagstr)) 
         db.session.add(article)
         db.session.commit()
+        flash("Article submitted!", "success")
         return redirect(url_for('user.members'))
+    else:
+        flash_errors(form)
     return render_template("media/edit.html", post_form=form)

@@ -1,22 +1,24 @@
 {% extends "layout.html" %}
 {% block content %}
- <section name="welcome">   
-	<h1>Welcome {{ session.username }}</h1>
-    <h3>This is the members-only page.</h3>
-	<div class="well">
-		<p>As you can see there isn't much here yet. As they (who?) say, 
-		<em>"het werk van de arbeiter, is per definitie, nooit af!"</em>
-		(or in English,<em>"the work of the worker, is by defintion, 
-		never finished!"</em>).</p>
-	</div>
-</section>
+<div class="body-content">
+	<section name="welcome">   
+		<h1>Welcome {{ session.username }}</h1>
+		<h3>This is the members-only page.</h3>
+		<div class="well">
+			<p>As you can see there isn't much here yet. As they (who?) say, 
+			<em>"het werk van de arbeiter, is per definitie, nooit af!"</em>
+			(or in English,<em>"the work of the worker, is by defintion, 
+			never finished!"</em>).</p>
+		</div>
+	</section>
 
-<section name="stuff-to-do">
-	<div class="list-group">
-		<a href="{{url_for('media.edit_article')}}" class="list-group-item">Write Article</a>
-		<a href="#" class="list-group-item disabled">Socialize</a>
-		<a href="#" class="list-group-item disabled">View Proposals</a>
-	</div>
-</section>
+	<section name="stuff-to-do">
+		<div class="list-group">
+			<a href="{{url_for('media.edit_article')}}" class="list-group-item">Write Article</a>
+			<a href="#" class="list-group-item disabled">Socialize</a>
+			<a href="#" class="list-group-item disabled">View Proposals</a>
+		</div>
+	</section>
+</div>
 {% endblock %}
 

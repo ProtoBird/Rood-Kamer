@@ -19,9 +19,20 @@ class CKTextAreaField(TextAreaField):
 class ArticleForm(Form):
     title = TextField('Title',
                       validators=[DataRequired(), Length(min=3, max=128)])
-    authors = SelectMultipleField('Author(s)',
-                         validators=[DataRequired()])
-    body = CKTextAreaField()
-    post = SubmitField()
+    authors = SelectMultipleField('Author(s)', validators=[DataRequired()],
+                                  coerce=int)
+    body = CKTextAreaField("Body", validators=[DataRequired()])
+    post = SubmitField("Post")
     is_visible = BooleanField("Publish")
     subject_tags = TextField("Tags")
+    
+    def __init__(self, *args, **kwargs):
+        super(ArticleForm, self).__init__(*args, **kwargs)
+
+    def validate(self):
+        initial_validation = super(ArticleForm, self).validate()
+        if not initial_validation:
+            return False
+        else:
+            return True
+        
