@@ -3,6 +3,7 @@ from wtforms import TextField, PasswordField, SubmitField
 from wtforms.widgets import TextArea
 from wtforms.fields import TextAreaField, SelectMultipleField
 from wtforms.validators import DataRequired, Length
+from wtforms.fields.core import BooleanField
 
 from roodkamer.user.models import User
 
@@ -22,4 +23,5 @@ class ArticleForm(Form):
                          validators=[DataRequired()])
     body = CKTextAreaField()
     post = SubmitField()
+    is_visible = BooleanField("Publish")
     subject_tags = TextField("Tags")

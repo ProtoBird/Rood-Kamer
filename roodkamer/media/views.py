@@ -24,7 +24,8 @@ def edit_article():
     if request.method == "POST":
         #TODO: Setup validation
         article = Article.create(title=form.title.data,
-                                 body=form.body.data)
+                                 body=form.body.data,
+                                 publish=form.is_visible.data)
         aids = [int(x) for x in form.authors.data]
         for aid in User.query.filter(User.id.in_(aids)):
             article.authors.append(aid)

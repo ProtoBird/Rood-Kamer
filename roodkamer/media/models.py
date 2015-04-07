@@ -31,8 +31,8 @@ class Article(SurrogatePK, Model):
     subject_tags = db.relationship('Tag', secondary=tags,
         backref=db.backref('articles', lazy='dynamic'))
 
-    def __init__(self, title, visible=False, **kwargs):
-        db.Model.__init__(self, title=title, is_visible=visible, **kwargs)
+    def __init__(self, title, publish=False, **kwargs):
+        db.Model.__init__(self, title=title, is_visible=publish, **kwargs)
 
     def __repr__(self):
         return '<Article({title})>'.format(title=self.title)
