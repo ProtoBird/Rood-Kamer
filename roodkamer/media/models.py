@@ -45,4 +45,4 @@ class Tag(Model):
         db.Model.__init__(self, name=name, **kwargs)
         
     def __repr__(self):
-        return '<Tag{name}>'.format(name=self.name)
+        return '<Tag({name})>'.format(name=self.name)

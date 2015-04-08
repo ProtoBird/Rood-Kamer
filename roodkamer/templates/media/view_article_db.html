@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="body-content">
+	<table class="table table-striped">
+		<tr>
+			<th>ID</th>
+			<th>Title</th>
+			<th>Authors</th>
+			<th>Is_Published</th>
+			<th>Tags</th>
+			<th>Created On</th>
+		</tr>
+		{% for article in articles %}
+			<tr>
+				<td>{{article["id"]}}</td>
+				<td>{{article["title"]}}</td>
+				<td>{{article["authors"] }}</td>
+				<td>{{article["published"]}}</td>
+				<td>{{ article["subject_tags"] }}</td>
+				<td>{{ article["timestamp"] }}</td>
+			</tr>
+		{% endfor %}
+	</table>
+</div>
+{% endblock %}

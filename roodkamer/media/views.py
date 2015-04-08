@@ -39,3 +39,19 @@ def edit_article():
     else:
         flash_errors(form)
     return render_template("media/edit.html", post_form=form)
+
+@login_required
+@blueprint.route("/view_article_db/", methods=["GET"])
+def view_article_db():
+    arts = Article.query.filter().all()
+    articles = []
+    for art in arts:
+        article = {}
+        article["id"] = art.id
+        article["title"] = art.title
+        article["authors"] = ", ".join([str(a.username) for a in art.authors])
+        article["tags"] = ", ".join([str(a.name) for a in art.subject_tags])
+        article["published"] = art.is_visible
+        article["timestamp"] = art.created_at.ctime()
+        articles.append(article) 
+    return render_template("media/view_article_db.html", articles=articles)
