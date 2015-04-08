@@ -25,6 +25,7 @@ class ArticleForm(Form):
     post = SubmitField("Post")
     is_visible = BooleanField("Publish")
     subject_tags = TextField("Tags")
+    cancel = SubmitField("Cancel")
     
     def __init__(self, *args, **kwargs):
         super(ArticleForm, self).__init__(*args, **kwargs)

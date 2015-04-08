@@ -22,7 +22,10 @@ def edit_article():
     assert(uid in [x[0] for x in form.authors.choices])
     #TODO: Get the default to actually work
     form.authors.default = uid
-    if form.validate_on_submit():
+    
+    if form.cancel.data:
+        return redirect(url_for('media.view_article_db'))
+    elif form.validate_on_submit():
         article = Article.create(title=form.title.data,
                                  body=form.body.data,
                                  publish=form.is_visible.data)
@@ -35,7 +38,7 @@ def edit_article():
         db.session.add(article)
         db.session.commit()
         flash("Article submitted!", "success")
-        return redirect(url_for('user.members'))
+        return redirect(url_for('media.view_article_db'))
     else:
         flash_errors(form)
     return render_template("media/edit.html", post_form=form)
