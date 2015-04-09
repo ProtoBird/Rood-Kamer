@@ -14,15 +14,25 @@ blueprint = Blueprint('media', __name__, url_prefix='/media',
                       static_folder="../static")
 
 @login_required
-@blueprint.route("/edit_article/", methods=['GET', 'POST'])
-def edit_article():
-    form = ArticleForm(request.form, csrf_enabled=False)
-    form.authors.choices = [(u.id, u.full_name) for u in User.query.order_by('last_name')]
-    uid = int(session['user_id'])
-    assert(uid in [x[0] for x in form.authors.choices])
-    #TODO: Get the default to actually work
-    form.authors.default = uid
+@blueprint.route("/edit_article/id_<int:artid>", methods=['GET', 'POST'])
+def edit_article(artid=0):
+    form = None
     
+    if artid > 0:
+        article = Article.query.filter_by(id=artid).first()
+        if not article: 
+            flash("Article with id of {id} not found".format(id=artid))
+            return redirect(url_for('media.view_article_db'))
+        else:
+            form = ArticleForm(request.form, obj=article, csrf_enabled=False)
+            #form.subject_tags = [a.name for a in article.subject_tags] 
+    else:
+        form = ArticleForm(request.form, csrf_enabled=False)
+        uid = int(session['user_id'])
+        assert(uid in [x[0] for x in form.authors.choices])
+        #TODO: Get the default to actually work
+        form.authors.default = [uid]
+    form.authors.choices = [(u.id, u.full_name) for u in User.query.order_by('last_name')]    
     if form.cancel.data:
         return redirect(url_for('media.view_article_db'))
     elif form.validate_on_submit():
@@ -50,11 +60,10 @@ def view_article_db():
     articles = []
     for art in arts:
         article = {}
-        article["id"] = art.id
         article["title"] = art.title
-        article["authors"] = ", ".join([str(a.username) for a in art.authors])
-        article["tags"] = ", ".join([str(a.name) for a in art.subject_tags])
+        article["authors"] = art.authors
+        article["tags"] = art.subject_tags
         article["published"] = art.is_visible
         article["timestamp"] = art.created_at.ctime()
-        articles.append(article) 
+        articles.append((article, art.id)) 
     return render_template("media/view_article_db.html", articles=articles)

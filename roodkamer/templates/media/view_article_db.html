@@ -10,10 +10,10 @@
 			<th>Tags</th>
 			<th>Created On</th>
 		</tr>
-		{% for article in articles %}
+		{% for article, id in articles %}
 			<tr>
-				<td>{{article["id"]}}</td>
-				<td>{{article["title"]}}</td>
+				<td>{{id}}</td>
+				<td><a href="{{url_for('media.edit_article', artid=id)}}">{{article["title"]}}</td>
 				<td>{{article["authors"] }}</td>
 				<td>
 					{% if article["published"] %}
@@ -27,6 +27,6 @@
 			</tr>
 		{% endfor %}
 	</table>
-	<a href="{{url_for('media.edit_article')}}" class="btn btn-primary btn-lg" role="button">New Article</a>
+	<a href="{{url_for('media.edit_article', artid=0)}}" class="btn btn-primary btn-lg" role="button">New Article</a>
 </div>
 {% endblock %}

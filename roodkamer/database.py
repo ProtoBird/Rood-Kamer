@@ -3,6 +3,7 @@
 utilities.
 """
 from sqlalchemy.orm import relationship
+from sqlalchemy.ext.associationproxy import association_proxy
 
 from .extensions import db
 from .compat import basestring
