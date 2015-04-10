@@ -61,8 +61,8 @@ def view_article_db():
     for art in arts:
         article = {}
         article["title"] = art.title
-        article["authors"] = art.authors
-        article["tags"] = art.subject_tags
+        article["authors"] = ", ".join(art.authors)
+        article["tags"] = ", ".join(art.subject_tags)
         article["published"] = art.is_visible
         article["timestamp"] = art.created_at.ctime()
         articles.append((article, art.id)) 
