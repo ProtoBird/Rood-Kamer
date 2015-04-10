@@ -17,6 +17,7 @@ blueprint = Blueprint('media', __name__, url_prefix='/media',
 @blueprint.route("/edit_article/id_<int:artid>", methods=['GET', 'POST'])
 def edit_article(artid=0):
     form = None
+    tagdisplay, authdisplay = None, None
     
     if artid > 0:
         article = Article.query.filter_by(id=artid).first()
@@ -25,6 +26,8 @@ def edit_article(artid=0):
             return redirect(url_for('media.view_article_db'))
         else:
             form = ArticleForm(request.form, obj=article, csrf_enabled=False)
+            tagdisplay = ", ".join(article.subject_tags)
+            authdisplay = ", ".join(article.authors)
             #form.subject_tags = [a.name for a in article.subject_tags] 
     else:
         form = ArticleForm(request.form, csrf_enabled=False)
@@ -51,7 +54,7 @@ def edit_article(artid=0):
         return redirect(url_for('media.view_article_db'))
     else:
         flash_errors(form)
-    return render_template("media/edit.html", post_form=form)
+    return render_template("media/edit.html", post_form=form, tagdisplay=tagdisplay, authdisplay=authdisplay)
 
 @login_required
 @blueprint.route("/view_article_db/", methods=["GET"])
