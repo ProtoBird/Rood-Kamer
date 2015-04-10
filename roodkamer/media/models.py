@@ -27,8 +27,7 @@ class Article(SurrogatePK, Model):
     title = Column(db.String(128), unique=True, nullable=False)
     authors_rel = db.relationship('User', secondary=authors,
                                   backref=db.backref('articles', lazy='dynamic'),
-                                  single_parent=True,
-                                  cascade="all,delete,delete-orphan")
+                                  single_parent=True)
     authors = association_proxy('authors_rel', 'username',
                             creator=lambda auth: User(username=auth))
     body = Column(db.Text, nullable=True)
