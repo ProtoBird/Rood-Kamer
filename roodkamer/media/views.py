@@ -29,8 +29,8 @@ def edit_article(artid=0):
             return redirect(url_for('media.view_article_db'))
         else:
             form = ArticleForm(request.form, obj=article, csrf_enabled=False)
-            tagdisplay = ", ".join(article.subject_tags)
-            authdisplay = ", ".join(article.authors)
+            tagdisplay = ', '.join([t.name for t in article.subject_tags])
+            authdisplay = ', '.join([t.username for t in article.authors])
     else:
         form = ArticleForm(request.form, csrf_enabled=False)
     form.authors.choices = [(u.id, u.full_name) for u in User.query.order_by('last_name')]    
@@ -39,15 +39,17 @@ def edit_article(artid=0):
     elif form.validate_on_submit():
         try:
             if article:
-                ud = {k:v for k,v in form.data.iteritems() if k not in ("post", "cancel", "subject_tags", "authors")}
-                tgs = form.data["subject_tags"].split(",")
-                article.subject_tags = [tid for tid in Tag.query.filter(Tag.name.in_(tgs))]
-                article.authors = [aid for aid in User.query.filter(User.id.in_(form.data["authors"]))] 
-                article.query.filter_by(id=artid).update(ud)
-                
-    #             article.authors = [aid for aid in User.query.filter(User.id.in_(form.data["authors"]))]
-    #             article.subject_tags = form.data["subject_tags"].split(",")
-    #             db.session.merge(article)
+                article.authors = User.query.filter(User.id.in_(form.data["authors"])).all()
+                tagobjs = []
+                for arttag in form.data["subject_tags"].split(","):
+                    tagobj = Tag.query.filter_by(name=arttag).first()
+                    if tagobj:
+                        tagobjs.append(tagobj)
+                    else:
+                        tagobjs.append(Tag.create(name=arttag))
+                article.subject_tags = tagobjs        
+                        
+                db.session.merge(article)
             else: 
                 article = Article.create(title=form.title.data,
                                          body=form.body.data,
@@ -77,8 +79,8 @@ def view_article_db():
     for art in arts:
         article = {}
         article["title"] = art.title
-        article["authors"] = art.authors
-        article["tags"] = art.subject_tags
+        article["authors"] = ", ".join([t.username for t in art.authors])
+        article["tags"] = ", ".join([t.name for t in art.subject_tags])
         article["published"] = art.is_visible
         article["timestamp"] = art.created_at.ctime()
         articles.append((article, art.id)) 
