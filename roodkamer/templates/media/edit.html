@@ -16,7 +16,14 @@
 		</div>
 		<div class="form-group">
 			{{ post_form.subject_tags.label }}
-			{{ post_form.subject_tags(class_="form-control",**{"data-role":"tagsinput"}) }}
+			{% if tags %}	
+				{{ post_form.subject_tags(class_="form-control",
+							  value=tags,
+							  **{"data-role":"tagsinput"}) }}
+			{% else %}
+				{{ post_form.subject_tags(class_="form-control",
+							  **{"data-role":"tagsinput"}) }}
+			{% endif %}
 		</div>
 		<div class="form-group">
 			{{ post_form.is_visible.label }}

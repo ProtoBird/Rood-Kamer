@@ -36,7 +36,7 @@ def edit_article(artid=0):
     form.authors.choices = [(u.id, u.full_name) for u in User.query.order_by('last_name')]    
     if form.cancel.data:
         return redirect(url_for('media.view_article_db'))
-    elif form.validate_on_submit():
+    if form.validate_on_submit():
         try:
             if article:
                 article.authors = User.query.filter(User.id.in_(form.data["authors"])).all()
@@ -69,7 +69,7 @@ def edit_article(artid=0):
         return redirect(url_for('media.view_article_db'))
     else:
         flash_errors(form)
-    return render_template("media/edit.html", post_form=form)
+    return render_template("media/edit.html", post_form=form, tags=tagdisplay, auths=authdisplay)
 
 @login_required
 @blueprint.route("/view_article_db/", methods=["GET"])

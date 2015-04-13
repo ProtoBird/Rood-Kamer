@@ -54,3 +54,6 @@ env*
 
 #Eclipse Settings
 .settings/
+
+#Gedit backups
+*~
