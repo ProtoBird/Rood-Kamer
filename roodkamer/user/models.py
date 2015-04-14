@@ -64,8 +64,8 @@ class User(UserMixin, SurrogatePK, Model):
     #: The hashed password
     password = Column(db.String(128), nullable=False)
     created_at = Column(db.DateTime, nullable=False, default=dt.datetime.utcnow)
-    first_name = Column(db.String(30), nullable=False)
-    last_name = Column(db.String(30), nullable=False)
+    first_name = Column(db.String(30), nullable=True)
+    last_name = Column(db.String(30), nullable=True)
     active = Column(db.Boolean(), default=True)
     is_admin = Column(db.Boolean(), default=False)
 

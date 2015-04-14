@@ -30,10 +30,10 @@ def edit_article(artid=0):
         else:
             form = ArticleForm(request.form, obj=article, csrf_enabled=False)
             tagdisplay = ', '.join([t.name for t in article.subject_tags])
-            authdisplay = ', '.join([t.username for t in article.authors])
+            authdisplay = {u.username : u.id for u in article.authors}
     else:
         form = ArticleForm(request.form, csrf_enabled=False)
-    form.authors.choices = [(u.id, u.full_name) for u in User.query.order_by('last_name')]    
+    form.authors.choices = [(u.id, u.username) for u in User.query.order_by('last_name')]    
     if form.cancel.data:
         return redirect(url_for('media.view_article_db'))
     if form.validate_on_submit():
