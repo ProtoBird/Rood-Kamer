@@ -9,14 +9,21 @@
 		</div>
 		<div class="form-group">
 			{{ post_form.authors.label }} 
-			{{ post_form.authors(class_="form-control", value=tagdisplay) }}
+			{{ post_form.authors(class_="form-control") }}
 		</div>
 		<div class="form-group">
 			{{ post_form.body() }}
 		</div>
 		<div class="form-group">
 			{{ post_form.subject_tags.label }}
-			{{ post_form.subject_tags(class_="form-control", value=authdisplay, **{"data-role":"tagsinput"}) }}
+			{% if tags %}	
+				{{ post_form.subject_tags(class_="form-control",
+							  value=tags,
+							  **{"data-role":"tagsinput"}) }}
+			{% else %}
+				{{ post_form.subject_tags(class_="form-control",
+							  **{"data-role":"tagsinput"}) }}
+			{% endif %}
 		</div>
 		<div class="form-group">
 			{{ post_form.is_visible.label }}
@@ -31,3 +38,4 @@
 	</form>
 </div>
 {% endblock %}
+

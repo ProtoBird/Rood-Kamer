@@ -1,3 +1,4 @@
+
 # -*- coding: utf-8 -*-
 '''Public section, including homepage and signup.'''
 from flask import (Blueprint, request, render_template, flash, url_for,
@@ -46,8 +47,8 @@ def register():
         new_user = User.create(username=form.username.data,
                         email=form.email.data,
                         password=form.password.data,
-                        first_name=form.first_name.data,
-                        last_name=form.last_name.data,
+                        fname=form.first_name.data,
+                        lname=form.last_name.data,
                         active=False)
         flash("Thank you for registering. You can now log in.", 'success')
         return redirect(url_for('public.home'))
@@ -59,3 +60,4 @@ def register():
 def about():
     form = LoginForm(request.form)
     return render_template("public/about.html", form=form)
+    
