@@ -38,3 +38,6 @@ Flask-DebugToolbar==0.9.1
 
 # Images
 Flask-Images==2.1.2
+
+# Uploads
+Flask-Uploads==0.1.3
