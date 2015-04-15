@@ -11,6 +11,7 @@ from roodkamer.extensions import (
     login_manager,
     migrate,
     debug_toolbar,
+    images,
 )
 from roodkamer import public, user, civic, media
 
@@ -37,6 +38,7 @@ def register_extensions(app):
     login_manager.init_app(app)
     debug_toolbar.init_app(app)
     migrate.init_app(app, db)
+    images.init_app(app)
     return None
 
 
