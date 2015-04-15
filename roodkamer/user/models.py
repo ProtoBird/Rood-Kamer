@@ -25,8 +25,8 @@ class Permission:
 class Role(SurrogatePK, Model):
     __tablename__ = 'roles'
     name = Column(db.String(80), unique=True, nullable=False)
-    user_id = ReferenceCol('users', nullable=True)
-    user = relationship('User', backref='roles')
+#     user_id = ReferenceCol('users', nullable=True)
+    users = relationship('User', backref='role', lazy='dynamic')
     default = db.Column(db.Boolean, default=False, index=True)
     permissions = db.Column(db.Integer)
     
@@ -68,11 +68,14 @@ class User(UserMixin, SurrogatePK, Model):
     last_name = Column(db.String(30), nullable=True)
     active = Column(db.Boolean(), default=True)
     is_admin = Column(db.Boolean(), default=False)
+    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
 
     def __init__(self, username, password=None, **kwargs):
         db.Model.__init__(self, username=username, **kwargs)
         if password:
             self.set_password(password)
+        if self.role is None:
+            self.role = Role.query.filter_by(default=True).first()
 
     def set_password(self, password):
         self.password = bcrypt.generate_password_hash(password)

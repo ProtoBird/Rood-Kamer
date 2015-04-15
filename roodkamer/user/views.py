@@ -12,3 +12,9 @@ blueprint = Blueprint("user", __name__, url_prefix='/users',
 def members():
     u = User.query.filter_by(id=session["user_id"]).first()
     return render_template("users/members.html", username=u.username)
+
+@blueprint.route("/profile.<username>")
+@login_required
+def profile(username):
+    u = User.query.filter_by(id=session["user_id"]).first()
+    return render_template("users/profile.html", user=u)

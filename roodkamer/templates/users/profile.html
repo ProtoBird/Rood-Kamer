@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="body-content">
+	<section name="userdata">   
+		<h1>{{user.username}}</h1>
+		<div class="well well-lg">
+			<p>Name: {{user.full_name}}</p>
+			<p>Email: {{user.email}}</p>
+			<p>Role: {{user.role}}</p>
+		</div>
+	</section>
+</div>
+{% endblock %}
