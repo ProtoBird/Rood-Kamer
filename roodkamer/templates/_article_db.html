@@ -1,0 +1,27 @@
+<table class="table table-striped">
+	<tr>
+		<th>ID</th>
+		<th>Title</th>
+		<th>Authors</th>
+		<th>Published?</th>
+		<th>Tags</th>
+		<th>Created On</th>
+	</tr>
+	{% for article, id in articles %}
+		<tr>
+			<td>{{id}}</td>
+			<td><a href="{{url_for('media.edit_article', artid=id)}}">{{article["title"]}}</td>
+			<td>{{article["authors"] }}</td>
+			<td>
+				{% if article["published"] %}
+					<span class="glyphicon glyphicon-ok"></span>
+				{% else %}
+					<span class="glyphicon glyphicon-remove"></span>
+				{% endif %}
+			</td>
+			<td>{{ article["tags"] }}</td>
+			<td>{{ article["timestamp"] }}</td>
+		</tr>
+	{% endfor %}
+</table>
+<a href="{{url_for('media.edit_article', artid=0)}}" class="btn btn-primary btn-lg" role="button">New Article</a>

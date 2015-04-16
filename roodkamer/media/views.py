@@ -9,6 +9,7 @@ from roodkamer.media.forms import ArticleForm
 from roodkamer.user.models import User
 from roodkamer.database import db
 from roodkamer.utils import flash_errors
+from roodkamer.media.utils import article_viewdb_generate
 
 from sqlalchemy.exc import InvalidRequestError
 
@@ -75,13 +76,5 @@ def edit_article(artid=0):
 @blueprint.route("/view_article_db/", methods=["GET"])
 def view_article_db():
     arts = Article.query.filter().all()
-    articles = []
-    for art in arts:
-        article = {}
-        article["title"] = art.title
-        article["authors"] = ", ".join([t.username for t in art.authors])
-        article["tags"] = ", ".join([t.name for t in art.subject_tags])
-        article["published"] = art.is_visible
-        article["timestamp"] = art.created_at.ctime()
-        articles.append((article, art.id)) 
+    articles = article_viewdb_generate(arts) 
     return render_template("media/view_article_db.html", articles=articles)
