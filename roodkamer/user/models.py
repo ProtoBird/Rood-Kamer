@@ -56,6 +56,9 @@ class Role(SurrogatePK, Model):
 
     def __repr__(self):
         return '<Role({name})>'.format(name=self.name)
+    
+    def __str__(self):
+        return self.name 
 
 class User(UserMixin, SurrogatePK, Model):
     __tablename__ = 'users'
