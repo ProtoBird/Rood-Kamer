@@ -41,6 +41,9 @@ def edit_article(artid=0):
         try:
             if article:
                 article.authors = User.query.filter(User.id.in_(form.data["authors"])).all()
+                article.title = form.title.data
+                article.body = form.body.data
+                article.is_visible = form.is_visible.data
                 tagobjs = []
                 for arttag in form.data["subject_tags"].split(","):
                     tagobj = Tag.query.filter_by(name=arttag).first()
