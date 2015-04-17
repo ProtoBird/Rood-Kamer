@@ -37,6 +37,7 @@ class Article(SurrogatePK, Model):
     authors = db.relationship('User', secondary=authors,
                                   backref=db.backref('articles', lazy='dynamic'),
                                   single_parent=True)
+    category = Column(db.String(80), unique=True)
     body = Column(db.Text, nullable=True)
     created_at = Column(db.DateTime, nullable=False, default=dt.datetime.utcnow)
     is_visible = Column(db.Boolean(), default=False)
