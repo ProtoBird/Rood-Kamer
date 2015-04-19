@@ -34,7 +34,11 @@ def edit_article(artid=0):
             authdisplay = {u.username : u.id for u in article.authors}
     else:
         form = ArticleForm(request.form, csrf_enabled=False)
-    form.authors.choices = [(u.id, u.username) for u in User.query.order_by('last_name')]    
+    form.authors.choices = [(u.id, u.username) for u in User.query.order_by('last_name')];    
+    q = db.session.query(Article.category.distinct().label('category'))        
+    form.category.choices = [(a.category, a.category) for a in q]    
+    if form.category.data and form.category.data not in form.category.choices:
+        form.category.choices.append((form.category.data, form.category.data))
     if form.cancel.data:
         return redirect(url_for('media.view_article_db'))
     if form.validate_on_submit():
@@ -44,6 +48,7 @@ def edit_article(artid=0):
                 article.title = form.title.data
                 article.body = form.body.data
                 article.is_visible = form.is_visible.data
+                article.category = form.category.data
                 tagobjs = []
                 for arttag in form.data["subject_tags"].split(","):
                     tagobj = Tag.query.filter_by(name=arttag).first()
@@ -57,7 +62,8 @@ def edit_article(artid=0):
             else: 
                 article = Article.create(title=form.title.data,
                                          body=form.body.data,
-                                         publish=form.is_visible.data)
+                                         publish=form.is_visible.data,
+                                         category=form.category.data)
                 aids = [int(x) for x in form.authors.data]
                 for aid in User.query.filter(User.id.in_(aids)):
                     article.authors.append(aid)

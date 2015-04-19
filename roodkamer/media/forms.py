@@ -1,7 +1,7 @@
 from flask_wtf import Form
 from wtforms import TextField, PasswordField, SubmitField
 from wtforms.widgets import TextArea
-from wtforms.fields import TextAreaField, SelectMultipleField
+from wtforms.fields import TextAreaField, SelectMultipleField, SelectField
 from wtforms.validators import DataRequired, Length
 from wtforms.fields.core import BooleanField
 
@@ -22,6 +22,8 @@ class ArticleForm(Form):
     authors = SelectMultipleField('Author(s)', validators=[DataRequired()],
                                   coerce=int)
     body = CKTextAreaField("Body", validators=[DataRequired()])
+    category = SelectField('Category', 
+                          validators=[DataRequired(), Length(min=3, max=80)])
     post = SubmitField("Post")
     is_visible = BooleanField("Publish")
     subject_tags = TextField("Tags")
