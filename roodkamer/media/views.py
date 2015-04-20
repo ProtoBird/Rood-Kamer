@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''Public section, including homepage and signup.'''
+'''Media section including articles and the management of images and video.'''
 from flask import (Blueprint, request, render_template, flash, url_for,
                     redirect, session)
 from flask.ext.login import login_required
