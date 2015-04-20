@@ -8,6 +8,7 @@ def article_viewdb_generate(arts):
         article = {}
         article["title"] = art.title
         article["authors"] = ", ".join([t.username for t in art.authors])
+        article["category"] = art.category
         article["tags"] = ", ".join([t.name for t in art.subject_tags])
         article["published"] = art.is_visible
         article["timestamp"] = art.created_at.ctime()
