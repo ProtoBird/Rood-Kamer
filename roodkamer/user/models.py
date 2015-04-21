@@ -25,7 +25,6 @@ class Permission:
 class Role(SurrogatePK, Model):
     __tablename__ = 'roles'
     name = Column(db.String(80), unique=True, nullable=False)
-#     user_id = ReferenceCol('users', nullable=True)
     users = relationship('User', backref='role', lazy='dynamic')
     default = db.Column(db.Boolean, default=False, index=True)
     permissions = db.Column(db.Integer)
