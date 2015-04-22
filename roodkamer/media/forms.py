@@ -7,14 +7,16 @@ from wtforms.fields.core import BooleanField
 
 from roodkamer.user.models import User
 
+
 class CKTextAreaWidget(TextArea):
     def __call__(self, field, **kwargs):
         kwargs.setdefault('class_', 'ckeditor')
         return super(CKTextAreaWidget, self).__call__(field, **kwargs)
- 
- 
+
+
 class CKTextAreaField(TextAreaField):
-    widget = CKTextAreaWidget() 
+    widget = CKTextAreaWidget()
+
 
 class ArticleForm(Form):
     title = TextField('Title',
@@ -22,13 +24,13 @@ class ArticleForm(Form):
     authors = SelectMultipleField('Author(s)', validators=[DataRequired()],
                                   coerce=int)
     body = CKTextAreaField("Body", validators=[DataRequired()])
-    category = SelectField('Category', 
-                          validators=[DataRequired(), Length(min=3, max=80)])
+    category = SelectField('Category',
+                           validators=[DataRequired(), Length(min=3, max=80)])
     post = SubmitField("Post")
     is_visible = BooleanField("Publish")
     subject_tags = TextField("Tags")
     cancel = SubmitField("Cancel")
-    
+
     def __init__(self, *args, **kwargs):
         super(ArticleForm, self).__init__(*args, **kwargs)
 
@@ -38,4 +40,3 @@ class ArticleForm(Form):
             return False
         else:
             return True
-        
