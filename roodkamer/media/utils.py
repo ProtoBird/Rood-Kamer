@@ -2,6 +2,7 @@
 '''Helper utilities and decorators, specifically for media.'''
 from roodkamer.media.models import Article
 
+
 def article_viewdb_generate(arts):
     articles = []
     for art in arts:
@@ -13,4 +14,4 @@ def article_viewdb_generate(arts):
         article["published"] = art.is_visible
         article["timestamp"] = art.created_at.ctime()
         articles.append((article, art.id))
-    return articles 
+    return articles
