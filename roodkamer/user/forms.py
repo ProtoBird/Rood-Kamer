@@ -4,19 +4,26 @@ from wtforms.validators import DataRequired, Email, EqualTo, Length
 
 from .models import User
 
+
 class RegisterForm(Form):
     first_name = TextField('First Name',
                            validators=[DataRequired(), Length(min=3, max=30)])
     last_name = TextField('Last Name',
-                           validators=[DataRequired(), Length(min=3, max=30)])
+                          validators=[DataRequired(), Length(min=3, max=30)])
     username = TextField('Username',
-                    validators=[DataRequired(), Length(min=3, max=25)])
-    email = TextField('Email',
-                    validators=[DataRequired(), Email(), Length(min=6, max=40)])
-    password = PasswordField('Password',
-                                validators=[DataRequired(), Length(min=6, max=40)])
-    confirm = PasswordField('Verify password',
-                [DataRequired(), EqualTo('password', message='Passwords must match')])
+                         validators=[DataRequired(), Length(min=3, max=25)])
+    email = TextField(
+        'Email',
+        validators=[DataRequired(), Email(), Length(min=6, max=40)]
+    )
+    password = PasswordField(
+        'Password',
+        validators=[DataRequired(), Length(min=6, max=40)]
+    )
+    confirm = PasswordField(
+        'Verify password',
+        [DataRequired(), EqualTo('password', message='Passwords must match')]
+    )
 
     def __init__(self, *args, **kwargs):
         super(RegisterForm, self).__init__(*args, **kwargs)

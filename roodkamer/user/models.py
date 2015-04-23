@@ -14,6 +14,7 @@ from roodkamer.database import (
 )
 from __builtin__ import staticmethod
 
+
 class Permission:
     COMMENT = 0x01
     WRITE_ARTICLES = 0x02
@@ -22,13 +23,14 @@ class Permission:
     BLOCK = 0x10
     ADMINISTER = 0x80
 
+
 class Role(SurrogatePK, Model):
     __tablename__ = 'roles'
     name = Column(db.String(80), unique=True, nullable=False)
     users = relationship('User', backref='role', lazy='dynamic')
     default = db.Column(db.Boolean, default=False, index=True)
     permissions = db.Column(db.Integer)
-    
+
     def __init__(self, name, **kwargs):
         db.Model.__init__(self, name=name, **kwargs)
 
@@ -55,9 +57,10 @@ class Role(SurrogatePK, Model):
 
     def __repr__(self):
         return '<Role({name})>'.format(name=self.name)
-    
+
     def __str__(self):
-        return self.name 
+        return self.name
+
 
 class User(UserMixin, SurrogatePK, Model):
     __tablename__ = 'users'
@@ -65,7 +68,11 @@ class User(UserMixin, SurrogatePK, Model):
     email = Column(db.String(80), unique=True, nullable=False)
     #: The hashed password
     password = Column(db.String(128), nullable=False)
-    created_at = Column(db.DateTime, nullable=False, default=dt.datetime.utcnow)
+    created_at = Column(
+        db.DateTime,
+        nullable=False,
+        default=dt.datetime.utcnow
+    )
     first_name = Column(db.String(30), nullable=True)
     last_name = Column(db.String(30), nullable=True)
     active = Column(db.Boolean(), default=True)

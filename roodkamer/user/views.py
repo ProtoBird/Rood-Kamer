@@ -6,7 +6,7 @@ from roodkamer.media.models import Article
 from roodkamer.media.utils import article_viewdb_generate
 
 blueprint = Blueprint("user", __name__, url_prefix='/users',
-                        static_folder="../static")
+                      static_folder="../static")
 
 
 @blueprint.route("/")
@@ -14,6 +14,7 @@ blueprint = Blueprint("user", __name__, url_prefix='/users',
 def members():
     u = User.query.filter_by(id=session["user_id"]).first()
     return render_template("users/members.html", username=u.username)
+
 
 @blueprint.route("/profile.<username>")
 @login_required
