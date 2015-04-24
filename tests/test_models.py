@@ -48,10 +48,7 @@ class TestUser:
         user = UserFactory(first_name="Foo", last_name="Bar")
         assert user.full_name == "Foo Bar"
 
-    def test_roles(self):
-        role = Role(name='admin')
-        role.save()
+    def test_default_role_is_observer(self):
         u = UserFactory()
-        u.roles.append(role)
         u.save()
-        assert role in u.roles
+        assert u.role.name == 'Observer' 

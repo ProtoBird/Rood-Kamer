@@ -67,7 +67,7 @@ class User(UserMixin, SurrogatePK, Model):
     username = Column(db.String(80), unique=True, nullable=False)
     email = Column(db.String(80), unique=True, nullable=False)
     #: The hashed password
-    password = Column(db.String(128), nullable=False)
+    password = Column(db.String(128), nullable=True)
     created_at = Column(
         db.DateTime,
         nullable=False,
