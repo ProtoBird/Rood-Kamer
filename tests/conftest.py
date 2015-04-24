@@ -5,6 +5,7 @@ import os
 import pytest
 from webtest import TestApp
 from .factories import UserFactory
+from sqlalchemy.exc import InvalidRequestError
 
 from roodkamer.settings import TestConfig
 from roodkamer.app import create_app
@@ -30,13 +31,18 @@ def testapp(app):
 @pytest.yield_fixture(scope='function')
 def db(app):
     _db.app = app
-    with app.app_context():
-        _db.create_all()
-        Role.insert_roles()
+    try:
+        with app.app_context():
+            _db.create_all()
+            Role.insert_roles()
+    except InvalidRequestError as ire:
+        _db.session.rollback()
+        _db.session.flush()
+    finally:    
 
-    yield _db
-
-    _db.drop_all()
+        yield _db
+    
+        _db.drop_all()
 
 
 @pytest.fixture

@@ -5,13 +5,14 @@ import datetime as dt
 import pytest
 
 from roodkamer.user.models import User, Role
+from roodkamer.media.models import Article
 from .factories import UserFactory
 
 @pytest.mark.usefixtures('db')
 class TestUser:
 
     def test_get_by_id(self):
-        user = User('foo', 'foo@bar.com')
+        user = User('foo', email='foo@bar.com')
         user.save()
 
         retrieved = User.get_by_id(user.id)
@@ -52,3 +53,13 @@ class TestUser:
         u = UserFactory()
         u.save()
         assert u.role.name == 'Observer' 
+
+
+@pytest.mark.usefixtures('db')
+class TestArticle:
+    def test_get_by_id(self):
+        art = Article('On the Development of Foo')
+        art.save()
+
+        retrieved = Article.get_by_id(art.id)
+        assert retrieved == art
