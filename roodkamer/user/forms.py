@@ -6,10 +6,8 @@ from .models import User
 
 
 class RegisterForm(Form):
-    first_name = TextField('First Name',
-                           validators=[DataRequired(), Length(min=3, max=30)])
-    last_name = TextField('Last Name',
-                          validators=[DataRequired(), Length(min=3, max=30)])
+    first_name = TextField('First Name')
+    last_name = TextField('Last Name')
     username = TextField('Username',
                          validators=[DataRequired(), Length(min=3, max=25)])
     email = TextField(
