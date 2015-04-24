@@ -4,12 +4,13 @@ import os
 
 import pytest
 from webtest import TestApp
+from .factories import UserFactory
 
 from roodkamer.settings import TestConfig
 from roodkamer.app import create_app
 from roodkamer.database import db as _db
+from roodkamer.user.models import Role
 
-from .factories import UserFactory
 
 @pytest.yield_fixture(scope='function')
 def app():
@@ -31,6 +32,7 @@ def db(app):
     _db.app = app
     with app.app_context():
         _db.create_all()
+        Role.insert_roles()
 
     yield _db
 
