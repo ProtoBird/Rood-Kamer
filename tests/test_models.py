@@ -6,7 +6,7 @@ import pytest
 
 from roodkamer.user.models import User, Role
 from roodkamer.media.models import Article
-from .factories import UserFactory
+from .factories import UserFactory, ArticleFactory, TagFactory
 
 
 @pytest.mark.usefixtures('db')
@@ -59,8 +59,16 @@ class TestUser:
 @pytest.mark.usefixtures('db')
 class TestArticle:
     def test_get_by_id(self):
-        art = Article('On the Development of Foo')
+        art = Article("On the nature of foo")
         art.save()
 
         retrieved = Article.get_by_id(art.id)
         assert retrieved == art
+
+    def test_factory(self, db):
+        artFact = ArticleFactory.create(subject_tags=[TagFactory(),
+                                                      TagFactory()])
+        db.session.commit()
+        assert bool(artFact.title)
+        assert bool(artFact.created_at)
+        assert bool(artFact.subject_tags)
