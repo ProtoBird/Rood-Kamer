@@ -23,7 +23,7 @@ class ArticleForm(Form):
                       validators=[DataRequired(), Length(min=3, max=128)])
     authors = SelectMultipleField('Author(s)', validators=[DataRequired()],
                                   coerce=int)
-    body = CKTextAreaField("Body", validators=[DataRequired()])
+    body = CKTextAreaField("Body")
     category = SelectField('Category',
                            validators=[DataRequired(), Length(min=3, max=80)])
     post = SubmitField("Post")
