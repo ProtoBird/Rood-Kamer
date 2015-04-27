@@ -78,3 +78,8 @@ class TestArticle:
         art.save()
         assert bool(art.created_at)
         assert isinstance(art.created_at, dt.datetime)
+
+    def test_is_visible_defaults_to_false(self):
+        art = Article("On the nature of foo")
+        art.save()
+        assert bool(art.is_visible) == False
