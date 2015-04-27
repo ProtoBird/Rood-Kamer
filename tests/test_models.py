@@ -72,3 +72,9 @@ class TestArticle:
         assert bool(artFact.title)
         assert bool(artFact.created_at)
         assert bool(artFact.subject_tags)
+
+    def test_created_at_defaults_to_datetime(self):
+        art = Article("On the nature of foo")
+        art.save()
+        assert bool(art.created_at)
+        assert isinstance(art.created_at, dt.datetime)
