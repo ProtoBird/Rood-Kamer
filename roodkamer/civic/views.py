@@ -4,4 +4,4 @@ from flask.ext.login import login_required
 from roodkamer.civic.models import Proposal
 
 blueprint = Blueprint("civic", __name__, url_prefix='/civic',
-                        static_folder="../static")
+                      static_folder="../static")
