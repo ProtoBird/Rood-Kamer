@@ -67,19 +67,19 @@ class TestArticle:
 
     def test_factory(self, db):
         artFact = ArticleFactory.create(subject_tags=[TagFactory(),
-                                                      TagFactory()])
+                                                      TagFactory()],
+                                        authors=[UserFactory(),
+                                                 UserFactory()]
+                                        )
         db.session.commit()
         assert bool(artFact.title)
         assert bool(artFact.created_at)
         assert bool(artFact.subject_tags)
+        assert bool(artFact.authors)
+        assert bool(artFact.is_visible) is False
 
     def test_created_at_defaults_to_datetime(self):
         art = Article("On the nature of foo")
         art.save()
         assert bool(art.created_at)
         assert isinstance(art.created_at, dt.datetime)
-
-    def test_is_visible_defaults_to_false(self):
-        art = Article("On the nature of foo")
-        art.save()
-        assert bool(art.is_visible) == False
