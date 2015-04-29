@@ -4,7 +4,7 @@ import os
 
 import pytest
 from webtest import TestApp
-from .factories import UserFactory
+from .factories import UserFactory, ArticleFactory, TagFactory
 from sqlalchemy.exc import InvalidRequestError
 
 from roodkamer.settings import TestConfig
@@ -23,10 +23,12 @@ def app():
 
     ctx.pop()
 
+
 @pytest.fixture(scope='session')
 def testapp(app):
     """A Webtest app."""
     return TestApp(app)
+
 
 @pytest.yield_fixture(scope='function')
 def db(app):
@@ -38,10 +40,10 @@ def db(app):
     except InvalidRequestError as ire:
         _db.session.rollback()
         _db.session.flush()
-    finally:    
+    finally:
 
         yield _db
-    
+
         _db.drop_all()
 
 
@@ -50,3 +52,13 @@ def user(db):
     user = UserFactory(password='myprecious')
     db.session.commit()
     return user
+
+
+@pytest.fixture
+def article(db):
+    article = ArticleFactory.create(subject_tags=[TagFactory(),
+                                                  TagFactory()],
+                                    authors=[UserFactory(),
+                                             UserFactory()])
+    #db.session.commit()
+    return article

@@ -26,6 +26,8 @@ class UserFactory(BaseFactory):
 
 class ArticleFactory(BaseFactory):
     title = Sequence(lambda n: "Interesting Original Article #{0}".format(n))
+    body = Sequence(lambda n: "In the course of blah #{0}...blah".format(n))
+    category = "Test Posts"
 
     class Meta:
         model = Article

@@ -76,6 +76,7 @@ class TestArticle:
         assert bool(artFact.created_at)
         assert bool(artFact.subject_tags)
         assert bool(artFact.authors)
+        assert bool(artFact.category)
         assert bool(artFact.is_visible) is False
 
     def test_created_at_defaults_to_datetime(self):

@@ -95,6 +95,10 @@ class User(UserMixin, SurrogatePK, Model):
     @property
     def full_name(self):
         return "{0} {1}".format(self.first_name, self.last_name)
+    
+    @classmethod
+    def get_all(cls, order='last_name'):
+        return cls.query.order_by(order).all()
 
     def __repr__(self):
         return '<User({username!r})>'.format(username=self.username)

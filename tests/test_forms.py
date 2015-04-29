@@ -1,32 +1,36 @@
 # -*- coding: utf-8 -*-
 import pytest
 
+from roodkamer.media.forms import ArticleForm
 from roodkamer.public.forms import LoginForm
 from roodkamer.user.forms import RegisterForm
-from .factories import UserFactory
+from roodkamer.user.models import User
+from roodkamer.media.models import Tag, Article
+from .factories import UserFactory, ArticleFactory
+
 
 class TestRegisterForm:
 
     def test_validate_user_already_registered(self, user):
         # Enters username that is already registered
         form = RegisterForm(username=user.username, email='foo@bar.com',
-            password='example', confirm='example', first_name="Foo",
-            last_name="Barister")
-        
+                            password='example', confirm='example',
+                            first_name="Foo", last_name="Barister")
+
         assert form.validate() is False
         assert 'Username already registered' in form.username.errors
 
     def test_validate_email_already_registered(self, user):
         # enters email that is already registered
         form = RegisterForm(username='unique', email=user.email,
-            password='example', confirm='example')
+                            password='example', confirm='example')
 
         assert form.validate() is False
         assert 'Email already registered' in form.email.errors
 
     def test_validate_success(self, db):
         form = RegisterForm(username='newusername', email='new@test.test',
-            password='example', confirm='example')
+                            password='example', confirm='example')
         assert form.validate() is True
 
 
@@ -60,3 +64,22 @@ class TestLoginForm:
         form = LoginForm(username=user.username, password='example')
         assert form.validate() is False
         assert 'User not activated' in form.username.errors
+
+
+class TestArticleForm:
+
+    def test_validate_success(self, article, db):
+        form = ArticleForm(
+            title="Now for Something Completely Different",
+            body=article.body,
+            category=article.category,
+            post="Post"
+        )
+        form.authors.choices = [(u.id, u.username) for u in User.get_all()]
+        form.subject_tags.choices = [(t.id, t.name) for t in Tag.get_all()]
+        form.category.choices = [(article.category, article.category)]
+
+        form.authors.data = [auth.id for auth in article.authors]
+        form.subject_tags.data = [tag.id for tag in article.subject_tags]
+
+        assert form.validate() is True
