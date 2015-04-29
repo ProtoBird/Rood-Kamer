@@ -6,7 +6,7 @@ from wtforms.validators import DataRequired, Length
 from wtforms.fields.core import BooleanField
 
 from roodkamer.user.models import User
-
+from roodkamer.media.models import Article
 
 class CKTextAreaWidget(TextArea):
     def __call__(self, field, **kwargs):
@@ -38,5 +38,8 @@ class ArticleForm(Form):
         initial_validation = super(ArticleForm, self).validate()
         if not initial_validation:
             return False
-        else:
-            return True
+        article = Article.query.filter_by(title=self.title.data).first()
+        if article:
+            self.title.errors.append("Title already in use")
+            return False
+        return True
