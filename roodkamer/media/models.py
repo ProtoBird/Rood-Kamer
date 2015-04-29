@@ -34,6 +34,10 @@ class Tag(Model):
     def __repr__(self):
         return '<Tag({name})>'.format(name=self.name)
 
+    @classmethod
+    def get_all(cls, order="name"):
+        return cls.query.order_by(order).all()
+
 
 class Article(SurrogatePK, Model):
     __tablename__ = "articles"
@@ -45,7 +49,7 @@ class Article(SurrogatePK, Model):
         single_parent=True
     )
     category = Column(db.String(80))
-    body = Column(db.Text, nullable=True)
+    body = Column(db.Text, nullable=True, unique=True)
     created_at = Column(
         db.DateTime,
         nullable=False,
