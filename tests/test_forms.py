@@ -6,7 +6,7 @@ from roodkamer.public.forms import LoginForm
 from roodkamer.user.forms import RegisterForm
 from roodkamer.user.models import User
 from roodkamer.media.models import Tag, Article
-from .factories import UserFactory, ArticleFactory
+from .factories import UserFactory, ArticleFactory, TagFactory
 
 
 class TestRegisterForm:
@@ -83,3 +83,30 @@ class TestArticleForm:
         form.subject_tags.data = [tag.id for tag in article.subject_tags]
 
         assert form.validate() is True
+
+    def test_title_is_already_in_use(self, article, db):
+        another = ArticleFactory.create(title="Now for Something Similar",
+                                        subject_tags=[TagFactory(),
+                                                      TagFactory()],
+                                        authors=[UserFactory(),
+                                                 UserFactory()])
+        db.session.add(another)
+        db.session.commit()
+
+        # Oh noes! Titles are too similar!
+        form = ArticleForm(
+            title="Now for Something Similar",
+            body=article.body,
+            category=article.category,
+            post="Post"
+        )
+
+        form.authors.choices = [(u.id, u.username) for u in User.get_all()]
+        form.subject_tags.choices = [(t.id, t.name) for t in Tag.get_all()]
+        form.category.choices = [(article.category, article.category)]
+
+        form.authors.data = [auth.id for auth in article.authors]
+        form.subject_tags.data = [tag.id for tag in article.subject_tags]
+
+        assert form.validate() is False
+        assert "Title already in use" in form.title.errors

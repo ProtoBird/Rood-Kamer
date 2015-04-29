@@ -60,5 +60,5 @@ def article(db):
                                                   TagFactory()],
                                     authors=[UserFactory(),
                                              UserFactory()])
-    #db.session.commit()
+    db.session.commit()
     return article
