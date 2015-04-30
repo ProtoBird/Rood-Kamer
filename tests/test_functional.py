@@ -8,7 +8,8 @@ from flask import url_for
 
 
 from roodkamer.user.models import User
-from .factories import UserFactory
+from roodkamer.media.models import Article, Tag
+from .factories import UserFactory, ArticleFactory, TagFactory
 
 
 class TestLoggingIn:
@@ -110,3 +111,20 @@ class TestRegistering:
         res = form.submit()
         # sees error
         assert "Username already registered" in res
+
+
+class TestArticleSubmission:
+
+    def test_can_submit_new_article(self, article, testapp):
+        # New articles are identified by having id=0
+        res = testapp.get(url_for('media.edit_article', artid=0))
+        form = res.forms['articleForm']
+        form['title'] = "Python: Now for Something Completely Different"
+        form['authors'] = [User.query.first().id]
+        form['body'] = "Unfinished artic"
+        form['category'] = "Test Posts"
+
+        #Submits
+        res = form.submit().follow()
+        assert res.status_code == 200
+        assert "Article submitted!" in res
