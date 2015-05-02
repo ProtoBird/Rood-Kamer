@@ -121,4 +121,5 @@ def edit_article(artid=NEW_ARTICLE):
 def view_article_db():
     arts = Article.query.filter().all()
     articles = article_viewdb_generate(arts)
-    return render_template("media/view_article_db.html", articles=articles)
+    return render_template("media/view_article_db.html", articles=articles,
+                           uid=session["user_id"])

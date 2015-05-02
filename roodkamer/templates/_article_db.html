@@ -11,8 +11,13 @@
 	{% for article, id in articles %}
 		<tr>
 			<td>{{id}}</td>
-			<td><a href="{{url_for('media.edit_article', artid=id)}}">{{article["title"]}}</td>
-			<td>{{article["authors"] }}</td>
+			<td>
+        {% if uid in article["authors"] %}
+          <a href="{{url_for('media.edit_article', artid=id)}}">{{article["title"]}}</td>
+        {% else %}
+          {{article["title"]}}
+        {% endif %}
+			<td>{{ article["authors"] }}</td>
 			<td>
 				{% if article["published"] %}
 					<span class="glyphicon glyphicon-ok"></span>
