@@ -38,6 +38,9 @@ def edit_article(artid=NEW_ARTICLE):
         if not article:
             flash("Article with id of {id} not found".format(id=artid))
             return redirect(url_for('media.view_article_db'))
+        elif int(session["user_id"]) not in article.authors:
+            flash("You are not authorized to edit this article.")
+            return redirect(url_for('media.view_article_db'))
         else:
             form = ArticleForm(request.form, obj=article, csrf_enabled=False)
             tagdisplay = ', '.join([t.name for t in article.subject_tags])
