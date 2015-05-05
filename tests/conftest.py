@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Defines fixtures available to all tests."""
 import os
+from collections import namedtuple
 
 import pytest
 from webtest import TestApp
@@ -11,6 +12,7 @@ from roodkamer.settings import TestConfig
 from roodkamer.app import create_app
 from roodkamer.database import db as _db
 from roodkamer.user.models import Role
+from aptdaemon.errors import NotAuthorizedError
 
 
 @pytest.yield_fixture(scope='function')
@@ -24,10 +26,10 @@ def app():
     ctx.pop()
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
 def testapp(app):
     """A Webtest app."""
-    return TestApp(app)
+    return TestApp(app, extra_environ={'wsgi.url_scheme': 'https'})
 
 
 @pytest.yield_fixture(scope='function')
@@ -62,3 +64,19 @@ def article(db):
                                              UserFactory()])
     db.session.commit()
     return article
+
+
+@pytest.fixture
+def authorship_scenario(db):
+    author = UserFactory(password="somepass1")
+    notAuthor = UserFactory(password="literaryRef42")
+    anArticle = ArticleFactory.create(subject_tags=[TagFactory()], 
+                                      authors=[author])
+    db.session.commit()
+    scenario = namedtuple("AuthorshipScenario", ["author", 
+                                                 "notAuthor", 
+                                                 "anArticle"])
+    scenario.author = author
+    scenario.notAuthor = notAuthor
+    scenario.anArticle = anArticle
+    return scenario 
