@@ -22,4 +22,5 @@ def profile(username):
     u = User.query.filter_by(id=session["user_id"]).first()
     uarticles = [art for art in Article.query.all() if u in art.authors]
     uarticles = article_viewdb_generate(uarticles)
-    return render_template("users/profile.html", user=u, articles=uarticles)
+    return render_template("users/profile.html", user=u,
+                           uid=long(session["user_id"]), articles=uarticles)

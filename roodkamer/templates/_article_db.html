@@ -12,7 +12,7 @@
 		<tr>
 			<td>{{id}}</td>
 			<td>
-        {% if uid in article["authors"] %}
+        {% if uid in article["authors_ids"] %}
           <a href="{{url_for('media.edit_article', artid=id)}}">{{article["title"]}}</td>
         {% else %}
           {{article["title"]}}
