@@ -8,3 +8,7 @@ factory-boy==2.4.1
 
 # Management script
 Flask-Script
+
+# MySQL
+MySQL-python>=1.2.5
+Flask-MySQLdb>=0.1.1
