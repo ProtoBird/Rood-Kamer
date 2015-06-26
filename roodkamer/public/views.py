@@ -10,6 +10,7 @@ from roodkamer.public.forms import LoginForm
 from roodkamer.user.forms import RegisterForm
 from roodkamer.utils import flash_errors
 from roodkamer.database import db
+from roodkamer.media.models import Article
 
 blueprint = Blueprint('public', __name__, static_folder="../static")
 
@@ -63,3 +64,18 @@ def register():
 def about():
     form = LoginForm(request.form)
     return render_template("public/about.html", form=form)
+
+
+@blueprint.route("/articles/")
+def articles():
+    published_articles = Article.query.filter_by(is_visible=True).all()
+    return render_template("public/articles.html", articles=published_articles)
+
+
+@blueprint.route("/articles/id_<int:artid>")
+def view_article(artid):
+    article = Article.query.filter_by(id=artid).first()
+    authors = ", ".join([auth.username for auth in article.authors])
+    return render_template("public/view_article.html",
+                           article=article,
+                           authors=authors)

@@ -10,7 +10,7 @@ from flask import (
     url_for,
     abort
 )
-from flask.views import MethodVie
+from flask.views import MethodView
 from flask.ext.login import login_required
 from sqlalchemy.exc import InvalidRequestError
 

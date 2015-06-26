@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="body-content">
+  <div class="page-header" id="article-title">
+    <h1>{{article.title}}</h1>
+    <h3>by {{authors}}</h3>
+  </div>
+  {{article.body|safe}}
+</div>
+{% endblock %}

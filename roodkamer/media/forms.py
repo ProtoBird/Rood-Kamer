@@ -25,7 +25,8 @@ class CKTextAreaField(TextAreaField):
     into a `flask_wtf.Form`.
     
     Attributes:
-        widget
+        widget (:class:`~roodkamer.media.forms.CKTextAreaWidget`): Pluggin location for the CK Text
+            widget.
     
     """
     widget = CKTextAreaWidget()
@@ -34,6 +35,8 @@ class ArticleForm(Form):
     """Article Form
     
     Form for writing new articles and editing published articles.
+    
+    Attributes:
     
     """
     title = TextField('Title',

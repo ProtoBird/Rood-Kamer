@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="body-content">
+  {% if articles %}
+    {% for article in articles %}
+      <div class="list-group">
+        {% set aid = article.id %}
+        <a href="{{url_for('public.view_article', artid=aid)}}" class="list-group-item active">
+          <h4 class="list-group-item-heading">{{article.title}}</h4>
+          <!-- <p class="list-group-item-text">...</p> -->
+        </a>
+      </div>
+    {% endfor %}
+  {% else %}
+  {% endif %}
+</div>
+{% endblock %}

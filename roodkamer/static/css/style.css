@@ -184,3 +184,9 @@ footer .footer-nav {
 .navbar-inverse .btn-link:focus {
   color: #ddcd18;
 }
+
+/* Articles */
+#article-title {
+  text-align: center;
+  font-weight: bolder;
+}
