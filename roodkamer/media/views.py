@@ -136,11 +136,12 @@ class SubmitArticle(MethodView):
         self.article = Article.query.filter_by(id=artid).first()
         
         # Prepare edit self.article display with valid inself.formation
+        author_ids = [a.id for a in self.article.authors]
         if artid is not NEW_ARTICLE:
             if not self.article:
                 msg = "Article with id of {id} not found".self.format(id=artid)
                 raise BadArticleIDException(msg)
-            elif int(session["user_id"]) not in self.article.authors:
+            elif int(session["user_id"]) not in author_ids:
                 msg = "You are not authorized to edit this article."
                 raise BadArticleIDException(msg)
             else:
@@ -193,7 +194,8 @@ class ViewArticleDB(MethodView):
     def get(self):
         arts = Article.query.filter().all()
         articles = article_viewdb_generate(arts) 
-        return render_template("media/view_article_db.html", 
+        return render_template("media/view_article_db.html",
+                               uid=long(session["user_id"]),
                                articles=articles)
 
 blueprint.add_url_rule(
