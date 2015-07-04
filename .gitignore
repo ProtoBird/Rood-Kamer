@@ -46,14 +46,18 @@ docs/_build
 env
 env*
 
-#Executable Windows Files
+# Executable Windows Files
 *.exe
 
-#Database Files
+# Database Files
 *.db
 
-#Eclipse Settings
+# Eclipse Settings
 .settings/
 
-#Gedit backups
+# Gedit backups
 *~
+
+# Documents
+*.doc
+*.odt*
