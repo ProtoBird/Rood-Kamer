@@ -9,8 +9,6 @@ roodkamer.media.forms module
 
 .. automodule:: roodkamer.media.forms
     :members:
-    :undoc-members:
-    :show-inheritance:
 
 roodkamer.media.models module
 -----------------------------
