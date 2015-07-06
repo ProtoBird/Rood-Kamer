@@ -23,7 +23,7 @@ sys.path.insert(0, os.path.abspath(os.path.pardir))
 # -- General configuration ------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
-#needs_sphinx = '1.0'
+needs_sphinx = '1.3'
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
@@ -340,7 +340,9 @@ epub_exclude_files = ['search.html']
 intersphinx_mapping = {
     'python': ('http://docs.python.org/2', None),
     'wtforms': ('http://wtforms.readthedocs.org/en/latest/', None),
-    'sqlalchemy': ('http://www.sqlalchemy.org/docs/', None),}
+    'sqlalchemy': ('http://www.sqlalchemy.org/docs/', None),
+    'flask': ('http://flask.pocoo.org/docs/0.10/', None),
+    'flaskwtf': ('https://flask-wtf.readthedocs.org/en/latest/', None)}
 
 # Napoleon settings
 napoleon_google_docstring = True
@@ -353,3 +355,7 @@ napoleon_use_admonition_for_references = False
 napoleon_use_ivar = False
 napoleon_use_param = True
 napoleon_use_rtype = True
+
+#autodoc_mock_imports = ["sqlalchemy.orm.relationship.paramref"]
+autoclass_content = 'both'
+
