@@ -11,6 +11,13 @@ Subpackages
     roodkamer.public
     roodkamer.user
 
+Module contents
+---------------
+
+.. automodule:: roodkamer
+    :members:
+    :show-inheritance:
+
 Submodules
 ----------
 
@@ -19,7 +26,6 @@ roodkamer.app module
 
 .. automodule:: roodkamer.app
     :members:
-    :undoc-members:
     :show-inheritance:
 
 roodkamer.assets module
@@ -27,7 +33,6 @@ roodkamer.assets module
 
 .. automodule:: roodkamer.assets
     :members:
-    :undoc-members:
     :show-inheritance:
 
 roodkamer.compat module
@@ -35,23 +40,20 @@ roodkamer.compat module
 
 .. automodule:: roodkamer.compat
     :members:
-    :undoc-members:
     :show-inheritance:
 
 roodkamer.database module
 -------------------------
-
 .. automodule:: roodkamer.database
     :members:
-    :undoc-members:
     :show-inheritance:
+    :exclude-members: relationship
 
 roodkamer.extensions module
 ---------------------------
 
 .. automodule:: roodkamer.extensions
     :members:
-    :undoc-members:
     :show-inheritance:
 
 roodkamer.settings module
@@ -59,7 +61,6 @@ roodkamer.settings module
 
 .. automodule:: roodkamer.settings
     :members:
-    :undoc-members:
     :show-inheritance:
 
 roodkamer.utils module
@@ -67,14 +68,4 @@ roodkamer.utils module
 
 .. automodule:: roodkamer.utils
     :members:
-    :undoc-members:
-    :show-inheritance:
-
-
-Module contents
----------------
-
-.. automodule:: roodkamer
-    :members:
-    :undoc-members:
     :show-inheritance:

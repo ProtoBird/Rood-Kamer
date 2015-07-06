@@ -1,6 +1,13 @@
 roodkamer.public package
 ========================
 
+Module contents
+---------------
+
+.. automodule:: roodkamer.public
+    :members:
+    :show-inheritance:
+
 Submodules
 ----------
 
@@ -9,7 +16,6 @@ roodkamer.public.forms module
 
 .. automodule:: roodkamer.public.forms
     :members:
-    :undoc-members:
     :show-inheritance:
 
 roodkamer.public.models module
@@ -17,22 +23,13 @@ roodkamer.public.models module
 
 .. automodule:: roodkamer.public.models
     :members:
-    :undoc-members:
     :show-inheritance:
+    :exclude-members: relationship
 
 roodkamer.public.views module
 -----------------------------
 
 .. automodule:: roodkamer.public.views
     :members:
-    :undoc-members:
     :show-inheritance:
 
-
-Module contents
----------------
-
-.. automodule:: roodkamer.public
-    :members:
-    :undoc-members:
-    :show-inheritance:
