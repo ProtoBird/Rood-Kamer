@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+"""Forms for roodkamer media and articles
+"""
+
 from flask_wtf import Form
 from wtforms import TextField
 from wtforms.widgets import TextArea
@@ -9,7 +12,6 @@ from wtforms.fields.simple import SubmitField
 
 from roodkamer.user.models import User
 from roodkamer.media.models import Article
-
 
 class CKTextAreaWidget(TextArea):
     """Widget for displaying WYSIWYG CK Editor
@@ -81,6 +83,17 @@ class ArticleForm(Form):
         super(ArticleForm, self).__init__(*args, **kwargs)
 
     def validate(self):
+        """Validation function for submitting/editing Articles
+        
+        An extension of :func:`~flaskwtf.Form.validate`. The extension checks
+        for duplicate titles.
+        
+        Returns:
+            True if the inherited validation function does and the title
+            submitted does not conflict with the title of another 
+            :class:`~roodkamer.media.models.Article`, False otherwise.
+        
+        """
         initial_validation = super(ArticleForm, self).validate()
         if not initial_validation:
             return False

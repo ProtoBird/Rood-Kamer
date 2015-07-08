@@ -11,6 +11,9 @@ from roodkamer.database import (
 import datetime as dt
 from roodkamer.user.models import User
 
+"""
+"""
+
 tags = db.Table(
     'tags',
     db.Column('tag_id', db.Integer, db.ForeignKey('tag.id')),
