@@ -76,7 +76,7 @@ class Article(SurrogatePK, Model):
         single_parent=True
     )
     category = Column(db.String(80))
-    body = Column(db.Text, nullable=True, unique=True)
+    body = Column(db.Text, nullable=True)
     created_at = Column(
         db.DateTime,
         nullable=False,

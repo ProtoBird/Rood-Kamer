@@ -13,8 +13,7 @@ from roodkamer.extensions import (
     debug_toolbar,
     images,
 )
-from roodkamer import public, user, civic, media
-
+from roodkamer import public, user, civic, media, library
 
 def create_app(config_object=ProdConfig):
     '''An application factory, as explained here:
@@ -47,6 +46,7 @@ def register_blueprints(app):
     app.register_blueprint(user.views.blueprint)
     app.register_blueprint(civic.views.blueprint)
     app.register_blueprint(media.views.blueprint)
+    app.register_blueprint(library.views.blueprint)
     return None
 
 

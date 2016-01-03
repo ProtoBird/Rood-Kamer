@@ -2,5 +2,7 @@
 from flask import Blueprint, render_template
 from flask.ext.login import login_required
 
+from roodkamer.library.models import Book, Author, Pulisher
+
 blueprint = Blueprint("library", __name__, url_prefix='/library',
                       static_folder="../static")
