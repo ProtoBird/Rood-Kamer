@@ -13,7 +13,7 @@ from roodkamer.database import (
 author_book_table = db.Table(
     "authors_to_books",
     db.Column('book_id', db.Integer, db.ForeignKey('books.id')),
-    db.Column('author_id', db.Integer, db.ForeignKey('authors.id'))  
+    db.Column('author_id', db.Integer, db.ForeignKey('library_authors.id'))  
 )
 
 
@@ -52,7 +52,7 @@ class Book(SurrogatePK, Model):
      
 
 class Author(SurrogatePK, Model):
-    __tablename__ = "authors"
+    __tablename__ = "library_authors"
     first_name = Column(db.String(64), unique=False, nullable=True)
     last_name = Column(db.String(64), unique=False, nullable=False)
 
