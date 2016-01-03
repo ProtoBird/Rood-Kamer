@@ -12,8 +12,8 @@ from roodkamer.database import (
 
 author_book_table = db.Table(
     "authors_to_books",
-    db.Column('book_id', db.Interger, db.ForeignKey('book.id')),
-    db.Column('author_id', db.Interger, db.ForeignKey('author.id'))  
+    db.Column('book_id', db.Integer, db.ForeignKey('books.id')),
+    db.Column('author_id', db.Integer, db.ForeignKey('authors.id'))  
 )
 
 
@@ -28,8 +28,7 @@ class Book(SurrogatePK, Model):
     # by one person. This does not apply for e-books, of course.
     inPossessionOf = db.relationship('User', 
                                      backref='book', 
-                                     lazy='dynamic',
-                                     nullable=True)
+                                     lazy='dynamic')
     isDeadTree = Column(db.Boolean, nullable=False)
     pages = Column(db.Integer(), nullable=True)
     bookType = Column(db.String(64), nullable=False)
@@ -41,10 +40,8 @@ class Book(SurrogatePK, Model):
                              default=None)
     publishedBy = db.relationship('Publisher',
                                   backref='book',
-                                  lazy=dynamic,
-                                  nullable=True,
-                                  default=None)
-    isbn = Column(db.String(10), unqiue=True, nullable=True, default=None)
+                                  lazy='dynamic')
+    isbn = Column(db.String(10), unique=True, nullable=True, default=None)
     isbn13 = Column(db.String(13), unique=True, nullable=True, default=None)
 
     def __repr__(self):
