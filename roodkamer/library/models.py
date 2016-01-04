@@ -20,7 +20,7 @@ author_book_table = db.Table(
 class Book(SurrogatePK, Model):
     __tablename__ = "books"
     
-    title = Column(db.String(128), unique=True, nullable=False)
+    title = Column(db.String(128), unique=False, nullable=False)
     authors = db.relationship('Author',
                               secondary=author_book_table,
                               backref=db.backref('books', lazy='dynamic'))
@@ -30,7 +30,7 @@ class Book(SurrogatePK, Model):
                                      backref='book', 
                                      lazy='dynamic')
     isDeadTree = Column(db.Boolean, nullable=False)
-    pages = Column(db.Integer(), nullable=True)
+    pages = Column(db.Integer, nullable=True)
     bookType = Column(db.String(64), nullable=False)
     publicationDate = Column(db.DateTime,
                              nullable=True,
@@ -38,9 +38,7 @@ class Book(SurrogatePK, Model):
     originalPublicationDate = Column(db.DateTime,
                              nullable=True,
                              default=None)
-    publishedBy = db.relationship('Publisher',
-                                  backref='book',
-                                  lazy='dynamic')
+    publishedBy = Column(db.Integer, db.ForeignKey('publishers.id'))
     isbn = Column(db.String(10), unique=True, nullable=True, default=None)
     isbn13 = Column(db.String(13), unique=True, nullable=True, default=None)
 
@@ -69,7 +67,9 @@ class Author(SurrogatePK, Model):
 class Publisher(SurrogatePK, Model):
     __tablename__ = "publishers"
     name = Column(db.String(128), unique=True, nullable=False)
+    books_published = db.relationship('Book',
+                                  backref='book',
+                                  lazy='dynamic') 
 
     def __repr__(self):
         return '<Publisher({name})>'.format(name=self.name)
-
