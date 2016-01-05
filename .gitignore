@@ -45,6 +45,8 @@ docs/_build
 # Virtualenvs
 env
 env*
+venv
+venv*
 
 # Executable Windows Files
 *.exe
