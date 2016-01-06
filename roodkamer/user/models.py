@@ -77,7 +77,8 @@ class User(UserMixin, SurrogatePK, Model):
     last_name = Column(db.String(30), nullable=True)
     active = Column(db.Boolean(), default=True)
     is_admin = Column(db.Boolean(), default=False)
-    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
+    role_id = Column(db.Integer, db.ForeignKey('roles.id'))
+    books_checked_out = Column(db.Integer, db.ForeignKey('books.id'))
 
     def __init__(self, username, password=None, **kwargs):
         db.Model.__init__(self, username=username, **kwargs)
