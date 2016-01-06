@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import datetime as dt
+import sys
 
 from flask.ext.login import UserMixin
 
@@ -18,17 +19,21 @@ from __builtin__ import staticmethod
 class Permission:
     COMMENT = 0x01
     WRITE_ARTICLES = 0x02
-    MODERATE_COMMENTS = 0x04
-    VOTE = 0x08
-    BLOCK = 0x10
-    ADMINISTER = 0x80
+    VOTE = 0x04
+    CHECK_OUT_BOOK = 0x08
+    SCHEDULE_LASER = 0x10
+    SCHEDULE_SHOPBOT = 0x20
+    SCHEDULE_TORMACH = 0x40
+    ADMINISTER_WEB = 0x80
+    ALL = 0xff
 
 
 class Role(SurrogatePK, Model):
     __tablename__ = 'roles'
     name = Column(db.String(80), unique=True, nullable=False)
-    users = relationship('User', backref='role', lazy='dynamic')
-    default = db.Column(db.Boolean, default=False, index=True)
+    users = relationship('User', backref='roles', lazy='dynamic')
+    default = db.Column(db.Boolean(create_constraint=False), default=False, 
+                        index=True)
     permissions = db.Column(db.Integer)
 
     def __init__(self, name, **kwargs):
@@ -37,24 +42,45 @@ class Role(SurrogatePK, Model):
     @staticmethod
     def insert_roles():
         roles = {
-            'Observer': (Permission.COMMENT |
-                         Permission.WRITE_ARTICLES, True),
-            'Comrade': (Permission.COMMENT |
+            'Observer': (Permission.COMMENT, True),
+            'Club Member': (Permission.COMMENT |
                         Permission.WRITE_ARTICLES |
-                        Permission.MODERATE_COMMENTS |
                         Permission.VOTE |
-                        Permission.BLOCK, False),
-            'Administrator': (0xff, False)
+                        Permission.CHECK_OUT_BOOK |
+                        Permission.SCHEDULE_LASER, False),
+            'Complete Member': (Permission.COMMENT |
+                        Permission.WRITE_ARTICLES |
+                        Permission.VOTE |
+                        Permission.CHECK_OUT_BOOK |
+                        Permission.SCHEDULE_LASER |
+                        Permission.SCHEDULE_SHOPBOT | 
+                        Permission.SCHEDULE_TORMACH, False),
+            'Web Master': (Permission.ADMINISTER_WEB, False),
+            'Board Member': (Permission.ALL, False),
         }
-        for r in roles:
-            role = Role.query.filter_by(name=r).first()
-            if role is None:
-                role = Role(name=r)
-            role.permissions = roles[r][0]
-            role.default = roles[r][1]
-            db.session.add(role)
+        
+        try:
+            assert [v[1] for v in roles.values()].count(True) == 1
+            for r in roles:
+                role = Role.query.filter_by(name=r).first()
+                if role is None:
+                    role = Role(name=r)
+                role.permissions = roles[r][0]
+                role.default = roles[r][1]
+                db.session.add(role)
+        except AssertionError:
+            defaults = [k for k,v in roles.items() if v[1]]
+            msg = "There should be only 1 default, instead there are {0}"
+            msg += ", namely: {1}.".format(len(defaults), defaults)
+            sys.stderr.write(msg)
         db.session.commit()
-
+    
+    def assign_role(self, users):
+        for user in users:
+            user.role_id = self.id
+            db.session.add(user)
+        db.session.commit()
+        
     def __repr__(self):
         return '<Role({name})>'.format(name=self.name)
 
