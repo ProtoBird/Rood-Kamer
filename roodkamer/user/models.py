@@ -31,7 +31,7 @@ class Permission:
 class Role(SurrogatePK, Model):
     __tablename__ = 'roles'
     name = Column(db.String(80), unique=True, nullable=False)
-    users = relationship('User', backref='roles', lazy='dynamic')
+    user_id = Column(db.Integer, db.ForeignKey('users.id'))
     default = db.Column(db.Boolean(create_constraint=False), default=False, 
                         index=True)
     permissions = db.Column(db.Integer)
@@ -76,9 +76,20 @@ class Role(SurrogatePK, Model):
         db.session.commit()
     
     def assign_role(self, users):
-        for user in users:
-            user.role_id = self.id
+        def add_user(user):
+            user_roles_names = [r.name for r in user.roles.all()] 
+            for user_role in user_roles_names:
+                if self.name in user_roles_names:
+                    msg = "User '{u}' already has Role '{r}'"
+                    msg.format(u=user.username, r=self.name)
+                    raise AttributeError(msg)
+            user.roles.append(self)  
             db.session.add(user)
+        try:
+            for user in users:
+                add_user(user)
+        except TypeError:
+            add_user(users)
         db.session.commit()
         
     def __repr__(self):
@@ -103,7 +114,8 @@ class User(UserMixin, SurrogatePK, Model):
     last_name = Column(db.String(30), nullable=True)
     active = Column(db.Boolean(), default=True)
     is_admin = Column(db.Boolean(), default=False)
-    role_id = Column(db.Integer, db.ForeignKey('roles.id'))
+    roles = db.relationship('Role', backref='users', lazy='dynamic',
+                            cascade="all, delete-orphan")
     books_checked_out = Column(db.Integer, db.ForeignKey('books.id'))
 
     def __init__(self, username, password=None, **kwargs):
