@@ -135,6 +135,18 @@ class User(UserMixin, SurrogatePK, Model):
     def full_name(self):
         return "{0} {1}".format(self.first_name, self.last_name)
     
+    @property
+    def permissions(self):
+        perms = 0b00000000
+        for r in self.roles.all():
+            perms = perms | r.permissions
+        return perms
+    
+    def can(self, permissions):
+        return self.permissions is not None and\
+            (self.permissions & permissions) == permissions 
+
+    
     @classmethod
     def get_all(cls, order='last_name'):
         return cls.query.order_by(order).all()
