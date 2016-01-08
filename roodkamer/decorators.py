@@ -5,7 +5,7 @@ from functools import wraps
 from flask import abort
 from flask.ext.login import current_user
 
-def permission_required(permission):
+def permissions_required(permission):
     def decorator(f):
         @wraps(f)
         def decorated_function(*args, **kwargs):

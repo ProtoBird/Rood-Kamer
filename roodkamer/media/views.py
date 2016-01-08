@@ -16,10 +16,11 @@ from sqlalchemy.exc import InvalidRequestError
 
 from roodkamer.media.models import Article, tags, Tag, authors
 from roodkamer.media.forms import ArticleForm
-from roodkamer.user.models import User
+from roodkamer.user.models import User, Permission
 from roodkamer.database import db
 from roodkamer.utils import flash_errors
 from roodkamer.media.utils import article_viewdb_generate
+from roodkamer.decorators import permissions_required
 
 blueprint = Blueprint('media', __name__, url_prefix='/media',
                       static_folder="../static")
@@ -33,7 +34,8 @@ class SubmitArticle(MethodView):
         self.form = None
         self.authdisplay = None
         self.tagdisplay = None
-        
+    
+    @permissions_required(Permission.WRITE_ARTICLES)
     def get(self, artid=NEW_ARTICLE):
         """View for self.article submission.
     
@@ -69,6 +71,7 @@ class SubmitArticle(MethodView):
                                tags=self.tagdisplay, 
                                auths=self.authdisplay)
 
+    @permissions_required(Permission.WRITE_ARTICLES)
     def post(self, artid=NEW_ARTICLE):
         try:
             self.prep_view_objects(artid)
