@@ -136,8 +136,8 @@ class SubmitArticle(MethodView):
         self.article = Article.query.filter_by(id=artid).first()
         
         # Prepare edit self.article display with valid inself.formation
-        author_ids = [a.id for a in self.article.authors]
         if artid is not NEW_ARTICLE:
+            author_ids = [a.id for a in self.article.authors]
             if not self.article:
                 msg = "Article with id of {id} not found".self.format(id=artid)
                 raise BadArticleIDException(msg)
