@@ -21,7 +21,13 @@ class LibraryMain(MethodView):
         return render_template("library/main.html")
 
 
+class LoanBook(MethodView):
+    decorators = [login_required]
+    
+    @permissions_required(Permission.CHECK_OUT_BOOK)
+    def get(self):
+        return render_template("library/loan_book.html")
+
 blueprint.add_url_rule(
     "/main/", 
     view_func=LibraryMain.as_view("main"))
-    

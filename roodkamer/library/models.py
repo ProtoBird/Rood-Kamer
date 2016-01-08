@@ -26,9 +26,11 @@ class Book(SurrogatePK, Model):
                               backref=db.backref('books', lazy='dynamic'))
     # One User can check out many books; 1 book may only be checked out
     # by one person. This does not apply for e-books, of course.
-    inPossessionOf = db.relationship('User', 
-                                     backref='book', 
-                                     lazy='dynamic')
+    possession_id = db.Column(db.Integer, db.ForeignKey('users.id'),
+                              nullable=True)
+    inPossessionOf = db.relationship('User', backref='books_checked_out',
+                                     foreign_keys=[possession_id])
+    
     isDeadTree = Column(db.Boolean, nullable=False)
     pages = Column(db.Integer, nullable=True)
     bookType = Column(db.String(64), nullable=False)
@@ -41,6 +43,12 @@ class Book(SurrogatePK, Model):
     publishedBy = Column(db.Integer, db.ForeignKey('publishers.id'))
     isbn = Column(db.String(10), unique=True, nullable=True, default=None)
     isbn13 = Column(db.String(13), unique=True, nullable=True, default=None)
+    
+    termOfLoan = Column(db.Date, nullable=True)
+    conditionOfLoan = Column(db.Text, nullable=True)
+    loaned_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    loanedBy = db.relationship('User', backref='books_loaned', 
+                               foreign_keys=[loaned_id])
 
     def __repr__(self):
         return '<Book({title} by {authors})>'.format(

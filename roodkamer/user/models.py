@@ -116,8 +116,7 @@ class User(UserMixin, SurrogatePK, Model):
     is_admin = Column(db.Boolean(), default=False)
     roles = db.relationship('Role', backref='users', lazy='dynamic',
                             cascade="all, delete-orphan")
-    books_checked_out = Column(db.Integer, db.ForeignKey('books.id'))
-
+    
     def __init__(self, username, password=None, **kwargs):
         db.Model.__init__(self, username=username, **kwargs)
         if password:
